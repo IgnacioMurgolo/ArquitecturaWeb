@@ -26,7 +26,6 @@ public class JPAInscripcionImp implements EntityRepository<Inscripcion> {
     public void insert(Inscripcion inscripcion) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-
         try {
             em.persist(inscripcion);
             transaction.commit();
@@ -63,7 +62,6 @@ public class JPAInscripcionImp implements EntityRepository<Inscripcion> {
     public boolean update(Inscripcion inscripcion) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-
         try {
             // Buscar si la inscripción existe
             Inscripcion inscripcionExistente = em.find(Inscripcion.class, inscripcion.getId());
@@ -96,7 +94,6 @@ public class JPAInscripcionImp implements EntityRepository<Inscripcion> {
     public boolean delete(int id) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-
         try {
             // Buscar la inscripción por ID
             Inscripcion inscripcion = em.find(Inscripcion.class, id);
@@ -121,10 +118,6 @@ public class JPAInscripcionImp implements EntityRepository<Inscripcion> {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         try {
-            // Obtener las entidades Estudiante y Carrera desde la base de datos
-            //  Estudiante estudiantePersistente = em.find(Estudiante.class, estudiante.getId());
-            //  Carrera carreraPersistente = em.find(Carrera.class, carrera.getId());
-
             // Buscar la inscripción correspondiente
             String jpql = "SELECT i FROM Inscripcion i WHERE i.estudiante = :estudiante AND i.carrera = :carrera";
             TypedQuery<Inscripcion> query = em.createQuery(jpql, Inscripcion.class);

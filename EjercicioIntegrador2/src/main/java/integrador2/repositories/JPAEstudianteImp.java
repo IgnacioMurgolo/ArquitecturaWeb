@@ -130,7 +130,6 @@ public class JPAEstudianteImp implements EntityRepository<Estudiante> {
         }
     }
 
-
     @Override
     public boolean delete(int id) {
         EntityTransaction transaction = em.getTransaction();

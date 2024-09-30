@@ -2,15 +2,13 @@ package integrador2.dtos;
 
 public class ReporteCarreraDTO {
     private String nombre;
-    private Integer anioInscripcion;
-    private Integer anioEgreso;
-    private Long cantInscriptos;
-    private Long cantEgresados;
+    private Integer anio;
+    private long cantInscriptos;
+    private long cantEgresados;
 
-    public ReporteCarreraDTO(String nombre, Integer anioInscripcion, Integer anioEgreso, Long cantInscriptos, Long cantEgresados) {
+    public ReporteCarreraDTO(String nombre, Integer anio, long cantInscriptos, long cantEgresados) {
         this.nombre = nombre;
-        this.anioInscripcion = anioInscripcion;
-        this.anioEgreso = anioEgreso;
+        this.anio = anio;
         this.cantInscriptos = cantInscriptos;
         this.cantEgresados = cantEgresados;
     }
@@ -19,19 +17,19 @@ public class ReporteCarreraDTO {
         return nombre;
     }
 
-    public Integer getAnioInscripcion() {
-        return anioInscripcion;
+    public Integer getAnio() {
+        return anio;
     }
 
-    public Integer getAnioEgreso() {
-        return anioEgreso;
-    }
-
-    public Long getCantInscriptos() {
+    public long getCantInscriptos() {
         return cantInscriptos;
     }
 
-    public Long getCantEgresados() {
+    public void setCantEgresados(long cantEgresados) {
+        this.cantEgresados = cantEgresados;
+    }
+
+    public long getCantEgresados() {
         return cantEgresados;
     }
 
@@ -39,8 +37,7 @@ public class ReporteCarreraDTO {
     public String toString() {
         return "Reporte de las carreras: " +
                 "nombre: " + nombre +
-                ", año de inscripcion: " + anioInscripcion +
-                ", año de egreso: " + anioEgreso +
+                ", año: " + anio +
                 ", cantidad de inscriptos: " + cantInscriptos +
                 ", cantidad de egresados: " + cantEgresados;
     }

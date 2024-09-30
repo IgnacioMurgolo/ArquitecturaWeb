@@ -124,14 +124,14 @@ public class Main {
             System.out.println(estudiante.toString());
         }
 
-
         System.out.println("--------------------------------------------------------");
+/*
         // primero egresar estudiantes
         // Imprimir nombres de estudiante y carrera la cual cambiarle el egreso de la inscripcion
         System.out.println("Nombre del estudiante persistido: Ignacio");
         System.out.println("Nombre de la carrera persistida: Licenciatura en Astronomia");
         // Obtener las entidades persistidas por su id
-        Estudiante estudiantePersistido = estudianteImp.selectById(2);
+        Estudiante estudiantePersistido = estudianteImp.selectById(6);
         Carrera carreraPersistida = carreraImp.selectById(3);
         //      tambien se puede buscar por nombre
         // Estudiante estudiantePersistido = estudianteImp.selectByName("Ignacio");
@@ -142,17 +142,19 @@ public class Main {
 
         if (estudiantePersistido != null && carreraPersistida != null) {
             // Actualizar año de egreso
-            Integer anioEgreso = 2024;
+            Integer anioEgreso = 2016;
             inscripcionImp.actualizarAnioEgreso(estudiantePersistido, carreraPersistida, anioEgreso);
         } else {
             System.out.println("No se pudieron obtener las entidades persistidas.");
         }
+*/
+
         // 3)Generar un reporte de las carreras, que para cada carrera incluya información de los
         //inscriptos y egresados por año. Se deben ordenar las carreras alfabéticamente, y presentar
         //los años de manera cronológica.
 
         System.out.println("Reporte de las carreras: ");
-        List<ReporteCarreraDTO> reporte = carreraImp.generarReporteCarreras();
+        List<ReporteCarreraDTO> reporte = carreraImp.getInscriptosYEgresadosPorAnio(); //generarReporteCarreras();
         if (reporte != null) {
             for (ReporteCarreraDTO r : reporte) {
                 System.out.println(r.toString());
