@@ -24,8 +24,6 @@ public class JPAEstudianteImp implements EntityRepository<Estudiante> {
         return instance;
     }
 
-    // Al tener CascadeType.ALL, cualquier operación realizada en la entidad Estudiante
-    // también afectará automáticamente a las entidades relacionadas
     @Override
     // a) Dar de alta un estudiante
     public void insert(Estudiante estudiante) {
@@ -132,8 +130,7 @@ public class JPAEstudianteImp implements EntityRepository<Estudiante> {
         }
     }
 
-    // Al tener CascadeType.ALL, cualquier operación realizada en la entidad Estudiante
-    // también afectará automáticamente a las entidades relacionadas
+
     @Override
     public boolean delete(int id) {
         EntityTransaction transaction = em.getTransaction();

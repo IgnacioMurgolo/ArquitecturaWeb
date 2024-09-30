@@ -43,9 +43,11 @@ public class Main {
         Inscripcion i10 = new Inscripcion(2011, c1, e8);
         Inscripcion i11 = new Inscripcion(2024, c3, e9);
 
+        // Obtener la instancia Singleton de RepositoryFactory
         RepositoryFactory rf = JPAMysqlRepositoryFactory.getRepositoryFactory(1);
 
         assert rf != null;
+        // Obtener los diferentes repositorios utilizando la misma instancia de RepositoryFactory
         JPAEstudianteImp estudianteImp = rf.getEstudianteRepository();
         JPAInscripcionImp inscripcionImp = rf.getInscripcionRepository();
         JPACarreraImp carreraImp = rf.getCarreraRepository();
@@ -81,61 +83,66 @@ public class Main {
         inscripcionImp.insert(i10);
         inscripcionImp.insert(i11);
 */
-/*
+
         //c) recuperar todos los estudiantes, y especificar algún criterio de ordenamiento simple
-        System.out.println("Listado de estudiantes ordenados por nombre");
+        System.out.println("c) Listado de estudiantes ordenados por nombre");
         List<Estudiante> estudiantesOrdenados = estudianteImp.obtenerEstudiantesOrdenadosPorNombre();
         for (Estudiante estudiante : estudiantesOrdenados) {
             System.out.println(estudiante.toString());
         }
-
+        System.out.println("------------------------------------------------------");
         //d) recuperar un estudiante, en base a su número de libreta universitaria
-        System.out.println("Recuperar un estudiante por su numero de libreta");
+        System.out.println("d) Recuperar un estudiante por su numero de libreta");
         long libreta = 12456;
         Estudiante recuperado = estudianteImp.obtenerEstudiantePorLu(libreta);
         System.out.println(recuperado.toString());
-
+        System.out.println("------------------------------------------------------");
         // e) recuperar todos los estudiantes, en base a su género
-        System.out.println("buscar por genero: femenino");
+        System.out.println("e) Buscar por genero: femenino");
         List<Estudiante> mujeres = estudianteImp.obtenerEstudiantesPorGenero("femenino");
         for (Estudiante estudiante : mujeres) {
             System.out.println(estudiante.toString());
         }
-        System.out.println("buscar por genero: masculino");
+        System.out.println("e) Buscar por genero: masculino");
         List<Estudiante> hombres = estudianteImp.obtenerEstudiantesPorGenero("masculino");
         for (Estudiante estudiante : hombres) {
             System.out.println(estudiante.toString());
         }
-
+        System.out.println("-------------------------------------------------------");
         //f) recuperar las carreras con estudiantes inscriptos, y ordenar por cantidad de inscriptos
-        System.out.println("Listado de carreras ordenada por cantidad de inscriptos");
+        System.out.println("f) Listado de carreras ordenada por cantidad de inscriptos");
         List<CarreraCantInscriptosDTO> carreras = inscripcionImp.listarCarrerasPorCantidadInscriptos();
         for (CarreraCantInscriptosDTO reporte : carreras) {
             System.out.println(reporte.toString());
         }
-
+        System.out.println("-------------------------------------------------------");
         //g) recuperar los estudiantes de una determinada carrera, filtrado por ciudad de residencia
-        System.out.println("Listar los alumnos que estudian Licenciatura en Astronomia y son de Tandil");
+        System.out.println("g) Listar los alumnos que estudian Licenciatura en Astronomia y son de Tandil");
         Carrera carrera = carreraImp.selectById(2);
         List<Estudiante> estudiantesBuscados = estudianteImp.recuperarEstudiantesPorCarreraYCiudad(carrera, "Tandil");
         for (Estudiante estudiante : estudiantesBuscados) {
             System.out.println(estudiante.toString());
         }
-*/
-        // egresar estudiantes
-        // Imprimir IDs para verificar
-        System.out.println("ID del estudiante persistido: " + e.getId());
-        System.out.println("ID de la carrera persistida: " + c1.getId());
-        // Obtener las entidades persistidas
-        Estudiante estudiantePersistido = estudianteImp.selectByName("Santiago");
-        Carrera carreraPersistida = carreraImp.selectByName("TUDAI");
 
-        System.out.println("El id del estudiante es: " + estudiantePersistido.getId() + "y el nombre: " + estudiantePersistido.getNombre());
-        System.out.println("El id de la carrera es: " + carreraPersistida.getId());
+
+        System.out.println("--------------------------------------------------------");
+        // primero egresar estudiantes
+        // Imprimir nombres de estudiante y carrera la cual cambiarle el egreso de la inscripcion
+        System.out.println("Nombre del estudiante persistido: Ignacio");
+        System.out.println("Nombre de la carrera persistida: Licenciatura en Astronomia");
+        // Obtener las entidades persistidas por su id
+        Estudiante estudiantePersistido = estudianteImp.selectById(2);
+        Carrera carreraPersistida = carreraImp.selectById(3);
+        //      tambien se puede buscar por nombre
+        // Estudiante estudiantePersistido = estudianteImp.selectByName("Ignacio");
+        // Carrera carreraPersistida = carreraImp.selectByName("Licenciatura en Astronomia");
+        // chequeo que sean correctos
+        System.out.println("El id del estudiante es: " + estudiantePersistido.getId() + " y el nombre: " + estudiantePersistido.getNombre());
+        System.out.println("El id de la carrera es: " + carreraPersistida.getId() + " y el nombre: " + carreraPersistida.getNombre());
 
         if (estudiantePersistido != null && carreraPersistida != null) {
             // Actualizar año de egreso
-            Integer anioEgreso = 2018;
+            Integer anioEgreso = 2024;
             inscripcionImp.actualizarAnioEgreso(estudiantePersistido, carreraPersistida, anioEgreso);
         } else {
             System.out.println("No se pudieron obtener las entidades persistidas.");
@@ -153,7 +160,6 @@ public class Main {
         } else {
             System.out.println("No hay carreras");
         }
-
 
     }
 }

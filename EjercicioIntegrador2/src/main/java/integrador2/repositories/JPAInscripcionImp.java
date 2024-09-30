@@ -32,7 +32,7 @@ public class JPAInscripcionImp implements EntityRepository<Inscripcion> {
             transaction.commit();
         } catch (PersistenceException e) {
             transaction.rollback();
-            System.out.println("Error al insertar inscripción! " + e.getMessage());
+            System.out.println("Error al insertar inscripción. " + e.getMessage());
             throw e;
         }
     }
@@ -44,7 +44,7 @@ public class JPAInscripcionImp implements EntityRepository<Inscripcion> {
                     .setParameter("id", id)
                     .getSingleResult();
         } catch (PersistenceException e) {
-            System.out.println("Error al obtener inscripcion por id! " + e.getMessage());
+            System.out.println("Error al obtener inscripcion por id. " + e.getMessage());
             throw e;
         }
     }
@@ -54,7 +54,7 @@ public class JPAInscripcionImp implements EntityRepository<Inscripcion> {
         try {
             return em.createQuery("SELECT i FROM Inscripcion i", Inscripcion.class).getResultList();
         } catch (PersistenceException e) {
-            System.out.println("Error al obtener inscripciones! " + e.getMessage());
+            System.out.println("Error al obtener inscripciones. " + e.getMessage());
             throw e;
         }
     }
@@ -82,12 +82,12 @@ public class JPAInscripcionImp implements EntityRepository<Inscripcion> {
                 return true;
             } else {
                 transaction.rollback();
-                System.out.println("Inscripción no encontrada");
+                System.out.println("Inscripción no encontrada.");
                 return false;
             }
         } catch (PersistenceException e) {
             transaction.rollback();
-            System.out.println("Error al actualizar inscripción " + e.getMessage());
+            System.out.println("Error al actualizar inscripción. " + e.getMessage());
             return false;
         }
     }
@@ -147,7 +147,7 @@ public class JPAInscripcionImp implements EntityRepository<Inscripcion> {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            System.out.println("Error al actualizar el año de egreso: " + e.getMessage());
+            System.out.println("Error al actualizar el año de egreso. " + e.getMessage());
         } finally {
             em.close();
         }

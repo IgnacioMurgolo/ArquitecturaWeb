@@ -65,8 +65,11 @@ public class Inscripcion {
     }
 
     public void setAnioEgreso(Integer anioEgreso) {
-        this.anioEgreso = anioEgreso;
-        this.setGraduado(true);
+        if (anioEgreso > anioInscripcion) {
+            this.anioEgreso = anioEgreso;
+            this.setGraduado(true);
+        } else
+            System.out.println("El año de egreso debe ser posterior al de inscripcion");
     }
 
     public boolean isGraduado() {
@@ -97,9 +100,9 @@ public class Inscripcion {
     public String toString() {
         return "año de inscripcion= " + anioInscripcion +
                 ", año de egreso= " + anioEgreso +
-                "antiguedad= " + getAntiguedad() +
+                " antiguedad= " + getAntiguedad() +
                 ", es graduado= " + graduado +
                 ", en la carrera= " + carrera +
-                ", datod del estudiante= " + estudiante;
+                ", datos del estudiante= " + estudiante;
     }
 }
