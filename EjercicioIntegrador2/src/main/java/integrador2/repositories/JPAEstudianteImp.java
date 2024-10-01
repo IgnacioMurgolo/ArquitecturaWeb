@@ -1,5 +1,6 @@
 package integrador2.repositories;
 
+import integrador2.dtos.EstudianteDTO;
 import integrador2.entities.Carrera;
 import integrador2.entities.Estudiante;
 import integrador2.entities.Inscripcion;
@@ -53,6 +54,7 @@ public class JPAEstudianteImp implements EntityRepository<Estudiante> {
             throw e;
         }
     }
+
     public Estudiante selectByName(String name) {
         try {
             return em.createQuery("SELECT e FROM Estudiante e WHERE e.nombre = :nombre", Estudiante.class)
@@ -77,8 +79,6 @@ public class JPAEstudianteImp implements EntityRepository<Estudiante> {
         }
     }
 
-    // Al tener CascadeType.ALL, cualquier operación realizada en la entidad Estudiante
-    // (insertar, actualizar, eliminar) también afectará automáticamente a las entidades relacionadas
     @Override
     public boolean update(Estudiante estudiante) {
         EntityTransaction transaction = em.getTransaction();
@@ -154,9 +154,10 @@ public class JPAEstudianteImp implements EntityRepository<Estudiante> {
     }
 
     // c) Recuperar todos los estudiantes, y especificar algún criterio de ordenamiento simple -> Por nombre
-    public List<Estudiante> obtenerEstudiantesOrdenadosPorNombre() {
+    public List<EstudianteDTO> obtenerEstudiantesOrdenadosPorNombre() {
         try {
-            return em.createQuery("SELECT e FROM Estudiante e ORDER BY e.nombre", Estudiante.class).getResultList();
+            return em.createQuery("SELECT new integrador2.dtos.EstudianteDTO(e.nombre, e.apellido, e.anioNacimiento, e.genero, e.dni, e.ciudadResidencia, e.lu) " +
+                    "FROM Estudiante e ORDER BY e.nombre", EstudianteDTO.class).getResultList();
         } catch (PersistenceException e) {
             System.out.println("Error al obtener estudiantes ordenados por nombre! " + e.getMessage());
             throw e;
@@ -164,9 +165,10 @@ public class JPAEstudianteImp implements EntityRepository<Estudiante> {
     }
 
     // d) Recuperar un estudiante en base a su número de libreta universitaria
-    public Estudiante obtenerEstudiantePorLu(long lu) {
+    public EstudianteDTO obtenerEstudiantePorLu(long lu) {
         try {
-            return em.createQuery("SELECT e FROM Estudiante e WHERE e.lu = :lu", Estudiante.class)
+            return em.createQuery("SELECT new integrador2.dtos.EstudianteDTO(e.nombre, e.apellido, e.anioNacimiento, e.genero, e.dni, e.ciudadResidencia, e.lu) " +
+                            " FROM Estudiante e WHERE e.lu = :lu", EstudianteDTO.class)
                     .setParameter("lu", lu)
                     .getSingleResult();
         } catch (PersistenceException e) {
@@ -176,9 +178,10 @@ public class JPAEstudianteImp implements EntityRepository<Estudiante> {
     }
 
     // e) Recuperar todos los estudiantes en base a su género
-    public List<Estudiante> obtenerEstudiantesPorGenero(String genero) {
+    public List<EstudianteDTO> obtenerEstudiantesPorGenero(String genero) {
         try {
-            return em.createQuery("SELECT e FROM Estudiante e WHERE e.genero = :genero", Estudiante.class)
+            return em.createQuery("SELECT new integrador2.dtos.EstudianteDTO(e.nombre, e.apellido, e.anioNacimiento, e.genero, e.dni, e.ciudadResidencia, e.lu) " +
+                            " FROM Estudiante e WHERE e.genero = :genero", EstudianteDTO.class)
                     .setParameter("genero", genero)
                     .getResultList();
         } catch (PersistenceException e) {
@@ -188,10 +191,11 @@ public class JPAEstudianteImp implements EntityRepository<Estudiante> {
     }
 
     // g) Recuperar los estudiantes de una determinada carrera, filtrado por ciudad de residencia
-    public List<Estudiante> recuperarEstudiantesPorCarreraYCiudad(Carrera carrera, String ciudadResidencia) {
+    public List<EstudianteDTO> recuperarEstudiantesPorCarreraYCiudad(Carrera carrera, String ciudadResidencia) {
         try {
             return em.createQuery(
-                            "SELECT e FROM Inscripcion i JOIN i.estudiante e WHERE i.carrera = :carrera AND e.ciudadResidencia = :ciudad", Estudiante.class)
+                            "SELECT new integrador2.dtos.EstudianteDTO(e.nombre, e.apellido, e.anioNacimiento, e.genero, e.dni, e.ciudadResidencia, e.lu) " +
+                              " FROM Inscripcion i JOIN i.estudiante e WHERE i.carrera = :carrera AND e.ciudadResidencia = :ciudad", EstudianteDTO.class)
                     .setParameter("carrera", carrera)
                     .setParameter("ciudad", ciudadResidencia)
                     .getResultList();

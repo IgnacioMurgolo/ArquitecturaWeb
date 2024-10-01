@@ -109,7 +109,7 @@ public class JPAInscripcionImp implements EntityRepository<Inscripcion> {
             }
         } catch (PersistenceException e) {
             transaction.rollback();
-            System.out.println("Error al eliminar inscripción " + e.getMessage());
+            System.out.println("Error al eliminar inscripción. " + e.getMessage());
             return false;
         }
     }
@@ -145,7 +145,6 @@ public class JPAInscripcionImp implements EntityRepository<Inscripcion> {
             em.close();
         }
     }
-
 
     // b) Matricular un estudiante en una carrera
     public void matricularEstudiante(Estudiante estudiante, Carrera carrera, int anioInscripcion) {

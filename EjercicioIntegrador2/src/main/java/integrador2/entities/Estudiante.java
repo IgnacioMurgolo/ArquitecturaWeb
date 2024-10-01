@@ -139,12 +139,12 @@ public class Estudiante {
     @Override
     public String toString() {
         return "Estudiante: " +
-                " nombre= " + nombre +
-                ", apellido= " + apellido +
-                ", edad= " + getEdad() +
-                ", genero= " + genero +
-                ", dni= " + dni +
-                ", ciudad de residencia= " + ciudadResidencia +
-                ", libreta universitaria= " + lu;
+                " nombre: " + nombre +
+                ", apellido: " + apellido +
+                ", edad: " + getEdad() +
+                ", genero: " + genero +
+                ", dni: " + dni +
+                ", ciudad de residencia: " + ciudadResidencia +
+                ", libreta universitaria: " + lu;
     }
 }

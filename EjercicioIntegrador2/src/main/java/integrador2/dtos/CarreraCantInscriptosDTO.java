@@ -33,7 +33,7 @@ public class CarreraCantInscriptosDTO implements Serializable {
     @Override
     public String toString() {
         return "Reporte de Carrera: " +
-                "nombre de la carrera= " + nombreCarrera +
-                ", cantidad de inscriptos= " + cantidadInscriptos;
+                "nombre de la carrera: " + nombreCarrera +
+                ", cantidad de inscriptos: " + cantidadInscriptos;
     }
 }

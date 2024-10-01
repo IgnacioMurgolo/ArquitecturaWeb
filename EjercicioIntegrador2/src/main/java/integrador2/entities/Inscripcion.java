@@ -98,11 +98,11 @@ public class Inscripcion {
 
     @Override
     public String toString() {
-        return "año de inscripcion= " + anioInscripcion +
-                ", año de egreso= " + anioEgreso +
-                " antiguedad= " + getAntiguedad() +
-                ", es graduado= " + graduado +
-                ", en la carrera= " + carrera +
-                ", datos del estudiante= " + estudiante;
+        return "año de inscripcion: " + anioInscripcion +
+                ", año de egreso: " + anioEgreso +
+                " antiguedad: " + getAntiguedad() +
+                ", es graduado: " + graduado +
+                ", en la carrera: " + carrera +
+                ", datos del estudiante: " + estudiante;
     }
 }

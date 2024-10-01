@@ -61,6 +61,6 @@ public class Carrera {
     @Override
     public String toString() {
         return "Carrera: " +
-                ", nombre= " + nombre ;
+                ", nombre: " + nombre ;
     }
 }

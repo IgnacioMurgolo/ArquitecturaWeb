@@ -1,6 +1,7 @@
 package integrador2.main;
 
 import integrador2.dtos.CarreraCantInscriptosDTO;
+import integrador2.dtos.EstudianteDTO;
 import integrador2.factories.JPAMysqlRepositoryFactory;
 import integrador2.factories.RepositoryFactory;
 import integrador2.repositories.JPACarreraImp;
@@ -83,29 +84,28 @@ public class Main {
         inscripcionImp.insert(i10);
         inscripcionImp.insert(i11);
 */
-
         //c) recuperar todos los estudiantes, y especificar algún criterio de ordenamiento simple
         System.out.println("c) Listado de estudiantes ordenados por nombre");
-        List<Estudiante> estudiantesOrdenados = estudianteImp.obtenerEstudiantesOrdenadosPorNombre();
-        for (Estudiante estudiante : estudiantesOrdenados) {
+        List<EstudianteDTO> estudiantesOrdenados = estudianteImp.obtenerEstudiantesOrdenadosPorNombre();
+        for (EstudianteDTO estudiante : estudiantesOrdenados) {
             System.out.println(estudiante.toString());
         }
         System.out.println("------------------------------------------------------");
         //d) recuperar un estudiante, en base a su número de libreta universitaria
-        System.out.println("d) Recuperar un estudiante por su numero de libreta");
+        System.out.println("d) Recuperar un estudiante por su numero de libreta: 12456");
         long libreta = 12456;
-        Estudiante recuperado = estudianteImp.obtenerEstudiantePorLu(libreta);
+        EstudianteDTO recuperado = estudianteImp.obtenerEstudiantePorLu(libreta);
         System.out.println(recuperado.toString());
         System.out.println("------------------------------------------------------");
         // e) recuperar todos los estudiantes, en base a su género
         System.out.println("e) Buscar por genero: femenino");
-        List<Estudiante> mujeres = estudianteImp.obtenerEstudiantesPorGenero("femenino");
-        for (Estudiante estudiante : mujeres) {
+        List<EstudianteDTO> mujeres = estudianteImp.obtenerEstudiantesPorGenero("femenino");
+        for (EstudianteDTO estudiante : mujeres) {
             System.out.println(estudiante.toString());
         }
         System.out.println("e) Buscar por genero: masculino");
-        List<Estudiante> hombres = estudianteImp.obtenerEstudiantesPorGenero("masculino");
-        for (Estudiante estudiante : hombres) {
+        List<EstudianteDTO> hombres = estudianteImp.obtenerEstudiantesPorGenero("masculino");
+        for (EstudianteDTO estudiante : hombres) {
             System.out.println(estudiante.toString());
         }
         System.out.println("-------------------------------------------------------");
@@ -119,22 +119,21 @@ public class Main {
         //g) recuperar los estudiantes de una determinada carrera, filtrado por ciudad de residencia
         System.out.println("g) Listar los alumnos que estudian Licenciatura en Astronomia y son de Tandil");
         Carrera carrera = carreraImp.selectById(2);
-        List<Estudiante> estudiantesBuscados = estudianteImp.recuperarEstudiantesPorCarreraYCiudad(carrera, "Tandil");
-        for (Estudiante estudiante : estudiantesBuscados) {
+        List<EstudianteDTO> estudiantesBuscados = estudianteImp.recuperarEstudiantesPorCarreraYCiudad(carrera, "Tandil");
+        for (EstudianteDTO estudiante : estudiantesBuscados) {
             System.out.println(estudiante.toString());
         }
-
         System.out.println("--------------------------------------------------------");
 /*
         // primero egresar estudiantes
-        // Imprimir nombres de estudiante y carrera la cual cambiarle el egreso de la inscripcion
+        // Imprimir nombres de estudiante y carrera al cual cambiarle el año de egreso de la inscripcion
         System.out.println("Nombre del estudiante persistido: Ignacio");
         System.out.println("Nombre de la carrera persistida: Licenciatura en Astronomia");
         // Obtener las entidades persistidas por su id
         Estudiante estudiantePersistido = estudianteImp.selectById(6);
         Carrera carreraPersistida = carreraImp.selectById(3);
         //      tambien se puede buscar por nombre
-        // Estudiante estudiantePersistido = estudianteImp.selectByName("Ignacio");
+        // Estudiante estudiantePersistido = estudianteImp.selectByName("Martina");
         // Carrera carreraPersistida = carreraImp.selectByName("Licenciatura en Astronomia");
         // chequeo que sean correctos
         System.out.println("El id del estudiante es: " + estudiantePersistido.getId() + " y el nombre: " + estudiantePersistido.getNombre());
@@ -147,14 +146,14 @@ public class Main {
         } else {
             System.out.println("No se pudieron obtener las entidades persistidas.");
         }
+        System.out.println("-----------------------------------------------------------------");
 */
-
         // 3)Generar un reporte de las carreras, que para cada carrera incluya información de los
         //inscriptos y egresados por año. Se deben ordenar las carreras alfabéticamente, y presentar
         //los años de manera cronológica.
 
-        System.out.println("Reporte de las carreras: ");
-        List<ReporteCarreraDTO> reporte = carreraImp.getInscriptosYEgresadosPorAnio(); //generarReporteCarreras();
+        System.out.println("Reporte de las carreras por año indicando cantidad de inscriptos y egresos: ");
+        List<ReporteCarreraDTO> reporte = carreraImp.getInscriptosYEgresadosPorAnio();
         if (reporte != null) {
             for (ReporteCarreraDTO r : reporte) {
                 System.out.println(r.toString());
