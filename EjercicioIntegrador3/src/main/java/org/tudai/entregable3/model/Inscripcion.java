@@ -22,9 +22,7 @@ public class Inscripcion {
     @JoinColumn(name = "idEstudiante", nullable = false)
     private Estudiante estudiante;
 
-    public Inscripcion(){
-
-    }
+    public Inscripcion() {}
 
     public Inscripcion(Integer anioInscripcion, Integer anioEgreso, boolean graduado, Carrera carrera, Estudiante estudiante) {
         this.anioInscripcion = anioInscripcion;

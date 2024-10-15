@@ -1,5 +1,6 @@
 package org.tudai.entregable3.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class InscripcionController {
         this.inscripcionService = inscripcionService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity<List<InscripcionDTO>> findAll() {
         try{
             List<InscripcionDTO> inscripciones = inscripcionService.findAll();
@@ -34,7 +35,7 @@ public class InscripcionController {
         }
     }
 
-    @RequestMapping("/reporteCarreras")
+    @GetMapping("/reporteCarreras")
     public ResponseEntity<List<ReporteCarreraDTO>> getReporteCarreras() {
         try {
             List<ReporteCarreraDTO> reporte = inscripcionService.getReporteCarreras();

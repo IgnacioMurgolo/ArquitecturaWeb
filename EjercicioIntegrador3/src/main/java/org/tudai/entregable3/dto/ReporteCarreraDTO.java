@@ -12,11 +12,11 @@ public class ReporteCarreraDTO {
     private Integer cantInscriptos;
     private Integer cantEgresados;
 
-    public ReporteCarreraDTO(String nombreCarrera, int anio, int cantInscriptos, int cantEgresados) {
+    public ReporteCarreraDTO(String nombreCarrera, int anio, long cantInscriptos, long cantEgresados) {
         this.nombreCarrera = nombreCarrera;
         this.anio = anio;
         this.cantInscriptos = (int) cantInscriptos;
-        this.cantEgresados = cantEgresados;
+        this.cantEgresados = (int) cantEgresados;
     }
 
     @Override

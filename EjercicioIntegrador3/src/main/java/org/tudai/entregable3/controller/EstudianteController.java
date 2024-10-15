@@ -30,7 +30,7 @@ public class EstudianteController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity<List<EstudianteDTO>> findAll() {
         try {
             List<EstudianteDTO> estudiantes = estudianteService.findAll();

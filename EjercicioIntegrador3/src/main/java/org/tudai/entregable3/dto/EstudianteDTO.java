@@ -38,6 +38,5 @@ public class EstudianteDTO {
         this.dni = dni;
         this.ciudadResidencia = ciudadResidencia;
         this.libretaUniv = libretaUniv;
-        this.inscripciones = new ArrayList<>();
     }
 }

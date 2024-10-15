@@ -1,5 +1,6 @@
 package org.tudai.entregable3.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,6 +9,7 @@ import org.tudai.entregable3.dto.ReporteCarreraDTO;
 import org.tudai.entregable3.model.Carrera;
 import org.tudai.entregable3.model.Estudiante;
 import org.tudai.entregable3.model.Inscripcion;
+import org.tudai.entregable3.repository.EstudianteRepository;
 import org.tudai.entregable3.repository.InscripcionRepository;
 
 import java.util.*;
@@ -26,32 +28,25 @@ public class InscripcionService {
     @Transactional(readOnly = true)
     public List<ReporteCarreraDTO> getReporteCarreras() {
         try {
-            List<Object[]> inscriptos = inscripcionRepository.getInscriptosPorAnio();
-            List<Object[]> egresados = inscripcionRepository.getEgresadosPorAnio();
+            List<ReporteCarreraDTO> inscriptos = inscripcionRepository.getInscriptosPorAnio();
+            List<ReporteCarreraDTO> egresados = inscripcionRepository.getEgresadosPorAnio();
 
+            // Combinar listas de inscriptos y egresados si es necesario.
             Map<String, Map<Integer, ReporteCarreraDTO>> reporteMap = new HashMap<>();
 
             // Procesar inscriptos
-            for (Object[] inscripto : inscriptos) {
-                String nombreCarrera = (String) inscripto[0];
-                int anio = (Integer) inscripto[1];
-                int cantInscriptos = (Integer) inscripto[2];
-
+            for (ReporteCarreraDTO inscripto : inscriptos) {
                 reporteMap
-                        .computeIfAbsent(nombreCarrera, k -> new HashMap<>())
-                        .put(anio, new ReporteCarreraDTO(nombreCarrera, anio, cantInscriptos, 0));
+                        .computeIfAbsent(inscripto.getNombreCarrera(), k -> new HashMap<>())
+                        .put(inscripto.getAnio(), inscripto);
             }
 
             // Procesar egresados
-            for (Object[] egresado : egresados) {
-                String nombreCarrera = (String) egresado[0];
-                int anio = (Integer) egresado[1];
-                int cantEgresados = (Integer) egresado[2];
-
+            for (ReporteCarreraDTO egresado : egresados) {
                 reporteMap
-                        .computeIfAbsent(nombreCarrera, k -> new HashMap<>())
-                        .computeIfAbsent(anio, k -> new ReporteCarreraDTO(nombreCarrera, anio, 0, 0))
-                        .setCantEgresados(cantEgresados);
+                        .computeIfAbsent(egresado.getNombreCarrera(), k -> new HashMap<>())
+                        .computeIfAbsent(egresado.getAnio(), k -> new ReporteCarreraDTO(egresado.getNombreCarrera(), egresado.getAnio(), 0, 0))
+                        .setCantEgresados(egresado.getCantEgresados());
             }
 
             return reporteMap.values().stream()
@@ -63,6 +58,7 @@ public class InscripcionService {
             throw new RuntimeException("Error al generar reporte de carreras", e);
         }
     }
+
 
     @Transactional
     public void actualizarInscripcion(Integer anio, boolean esGraduado, Long estudianteId, Long carreraId) {

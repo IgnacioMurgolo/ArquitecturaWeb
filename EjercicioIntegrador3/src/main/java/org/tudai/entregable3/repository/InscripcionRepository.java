@@ -17,21 +17,20 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Long> 
     // 2h) Generar un reporte de las carreras, que para cada carrera incluya información de los
     // inscriptos y egresados por año. Se deben ordenar las carreras alfabéticamente, y
     // presentar los años de manera cronológica.
-
     @Transactional
-    @Query("SELECT c.nombre AS nombreCarrera, i.anioInscripcion AS anio, COUNT(i) AS cantInscriptos " +
+    @Query("SELECT new org.tudai.entregable3.dto.ReporteCarreraDTO(c.nombre, i.anioInscripcion, COUNT(i), 0L) " +
             "FROM Inscripcion i JOIN i.carrera c " +
             "GROUP BY c.nombre, i.anioInscripcion " +
             "ORDER BY c.nombre ASC, i.anioInscripcion ASC")
-    List<Object[]> getInscriptosPorAnio();
+    List<ReporteCarreraDTO> getInscriptosPorAnio();
 
     @Transactional
-    @Query("SELECT c.nombre AS nombreCarrera, i.anioEgreso AS anio, COUNT(i) AS cantEgresados " +
+    @Query("SELECT new org.tudai.entregable3.dto.ReporteCarreraDTO(c.nombre, i.anioEgreso, 0L, COUNT(i)) " +
             "FROM Inscripcion i JOIN i.carrera c " +
             "WHERE i.anioEgreso IS NOT NULL " +
             "GROUP BY c.nombre, i.anioEgreso " +
             "ORDER BY c.nombre ASC, i.anioEgreso ASC")
-    List<Object[]> getEgresadosPorAnio();
+    List<ReporteCarreraDTO> getEgresadosPorAnio();
 
     @Modifying
     @Transactional

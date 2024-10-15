@@ -41,7 +41,7 @@ public class CarreraController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity<List<CarreraDTO>> findAll() {
         try{
             List<CarreraDTO> carreras = carreraService.findAll();
