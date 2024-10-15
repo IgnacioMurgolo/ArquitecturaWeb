@@ -23,7 +23,7 @@ public class CarreraService {
     }
 
     @Transactional(readOnly = true)
-    public List<CarreraConCantidadInscriptosDTO> getCarreraCantidadInscriptos() {
+    public List<CarreraConCantidadInscriptosDTO> getCarrerasByCantidadInscriptos() {
         return carreraRepository.carrerasConInscriptos();
     }
 

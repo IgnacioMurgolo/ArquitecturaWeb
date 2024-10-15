@@ -1,6 +1,8 @@
 package org.tudai.entregable3.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.tudai.entregable3.dto.EstudianteDTO;
@@ -20,6 +22,7 @@ public class EstudianteController {
         this.estudianteService = estudianteService;
     }
 
+    //a) dar de alta un estudiante
     @PostMapping("/registrar")
     public ResponseEntity<?> save(@RequestBody Estudiante estudiante) {
         try {
@@ -34,23 +37,24 @@ public class EstudianteController {
     public ResponseEntity<List<EstudianteDTO>> findAll() {
         try {
             List<EstudianteDTO> estudiantes = estudianteService.findAll();
-            if (estudiantes != null) {
-                return ResponseEntity.ok(estudiantes);
-            } else {
-                return ResponseEntity.notFound().build();
+            if (estudiantes.isEmpty()) {
+                return ResponseEntity.noContent().build();
             }
+            return ResponseEntity.ok(estudiantes);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EstudianteDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<?> findById(@PathVariable Long id) {
         try {
             EstudianteDTO estudianteDTO = estudianteService.findById(id);
             return ResponseEntity.ok(estudianteDTO);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el estudiante con el id " + id);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.internalServerError().body("Ocurrió un error inesperado");
         }
     }
 
@@ -76,45 +80,48 @@ public class EstudianteController {
     }
 
     @GetMapping("/nombre/{nombre}")
-    public ResponseEntity<EstudianteDTO> findByNombre(@PathVariable String nombre) {
+    public ResponseEntity<List<EstudianteDTO>> findByNombre(@PathVariable String nombre) {
         try {
-            EstudianteDTO estudianteDTO = estudianteService.findByNombre(nombre);
-            if (estudianteDTO != null) {
-                return ResponseEntity.ok(estudianteDTO);
-            } else {
-                return ResponseEntity.notFound().build();
+            List<EstudianteDTO> estudiantes = estudianteService.findByNombre(nombre);
+            if (estudiantes.isEmpty()) {
+                return ResponseEntity.noContent().build();
             }
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    @GetMapping("/apellido/{apellido}")
-    public ResponseEntity<EstudianteDTO> findByApellido(@PathVariable String apellido) {
-        try {
-            EstudianteDTO estudianteDTO = estudianteService.findByApellido(apellido);
-            if (estudianteDTO != null) {
-                return ResponseEntity.ok(estudianteDTO);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    @GetMapping("/estudiantesOrdenadosPorNombre")
-    public ResponseEntity<List<EstudianteDTO>> estudiantesOrdenadosPorNombre() {
-        try {
-            List<EstudianteDTO> estudiantes = estudianteService.findEstudiantesOrdByNombre();
             return ResponseEntity.ok(estudiantes);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
+    @GetMapping("/apellido/{apellido}")
+    public ResponseEntity<List<EstudianteDTO>> findByApellido(@PathVariable String apellido) {
+        try {
+            List<EstudianteDTO> estudiantes = estudianteService.findByApellido(apellido);
+            if (estudiantes.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(estudiantes);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    // c) recuperar todos los estudiantes, y especificar algún criterio de ordenamiento simple (nombre)
+    @GetMapping("/ordenadosPorNombre")
+    public ResponseEntity<List<EstudianteDTO>> ordenadosPorNombre() {
+        try {
+            List<EstudianteDTO> estudiantes = estudianteService.findOrderByNombre();
+            if (estudiantes.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(estudiantes);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    // d) recuperar un estudiante, en base a su número de libreta universitaria
     @GetMapping("/libreta/{lu}")
-    public ResponseEntity<EstudianteDTO> estudiantesLibretaUniv(@PathVariable long lu) {
+    public ResponseEntity<EstudianteDTO> getEstudianteByLibretaUniv(@PathVariable long lu) {
         try {
             EstudianteDTO estudianteDTO = estudianteService.findByNumeroLibreta(lu);
             if (estudianteDTO != null) {
@@ -127,21 +134,33 @@ public class EstudianteController {
         }
     }
 
+    // e) recuperar todos los estudiantes, en base a su género
     @GetMapping("/genero/{genero}")
-    public ResponseEntity<List<EstudianteDTO>> estudiantesGenero(@PathVariable String genero) {
+    public ResponseEntity<List<EstudianteDTO>> getEstudiantesPorGenero(@PathVariable String genero) {
         try {
-            List<EstudianteDTO> estudiantes = estudianteService.findByGenero(genero);
+            String gen = genero.toLowerCase();
+            List<EstudianteDTO> estudiantes = estudianteService.findByGenero(gen);
+            if (estudiantes.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
             return ResponseEntity.ok(estudiantes);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
+    // g) recuperar los estudiantes de una determinada carrera, filtrado por ciudad de residencia.
     @GetMapping("/ciudad/{ciudad}/carrera/{carrera}")
-    public ResponseEntity<List<EstudianteDTO>> getEstudiantesPorCarreraCiudad(@PathVariable String ciudad, @PathVariable String carrera) {
+    public ResponseEntity<List<EstudianteDTO>> getByCiudadAndCarrera(@PathVariable String ciudad, @PathVariable String carrera) {
         try {
-            List<EstudianteDTO> estudiantes = estudianteService.findByCiudadCarrera(ciudad, carrera);
-            return ResponseEntity.ok(estudiantes);
+            String c = ciudad.toLowerCase();
+            String ca = carrera.toLowerCase();
+
+            List<EstudianteDTO> estudiantes = estudianteService.findByCiudadAndCarrera(c, ca);
+            if (estudiantes.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+                return ResponseEntity.ok(estudiantes);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }

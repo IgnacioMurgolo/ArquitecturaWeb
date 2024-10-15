@@ -10,9 +10,7 @@ import org.tudai.entregable3.model.Estudiante;
 import org.tudai.entregable3.repository.EstudianteRepository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,13 +29,12 @@ public class EstudianteService {
                         inscripcion.getAnioInscripcion(),
                         inscripcion.getAnioEgreso(),
                         inscripcion.isGraduado(),
-                        inscripcion.getCarrera().getNombre(), // Asumimos que carrera no es nulo
+                        inscripcion.getCarrera().getNombre(),
                         estudiante.getNombres() + " " + estudiante.getApellido() // Nombre completo del estudiante
                 ))
                 .collect(Collectors.toList());
 
-
-        // Convertir Estudiante a EstudianteDTO, asegurarse de que todos los valores sean válidos
+        // Convertir Estudiante a EstudianteDTO
         return new EstudianteDTO(
                 estudiante.getNombres() != null ? estudiante.getNombres() : "Nombre Desconocido",
                 estudiante.getApellido() != null ? estudiante.getApellido() : "Apellido Desconocido",
@@ -68,21 +65,21 @@ public class EstudianteService {
         return resultado;
     }
 
+    // a) dar de alta un estudiante
     @Transactional
     public void save(Estudiante estudiante) {
         estudianteRepository.save(estudiante);
     }
 
     @Transactional(readOnly = true)
-    public EstudianteDTO findByNombre(String nombre) {
+    public List<EstudianteDTO> findByNombre(String nombre) {
         return estudianteRepository.findByNombre(nombre);
     }
 
     @Transactional(readOnly = true)
-    public EstudianteDTO findByApellido(String apellido) {
+    public List<EstudianteDTO> findByApellido(String apellido) {
         return estudianteRepository.findByApellido(apellido);
     }
-
 
     @Transactional(readOnly = true)
     public List<EstudianteDTO> findByGenero(String genero) {
@@ -95,13 +92,12 @@ public class EstudianteService {
     }
 
     @Transactional(readOnly = true)
-    public List<EstudianteDTO> findEstudiantesOrdByNombre() {
-        // ACA PROBAR PONER COMO EL GETALL PARA LA
+    public List<EstudianteDTO> findOrderByNombre() {
         return estudianteRepository.getEstudiantesOrderByNombre();
     }
 
     @Transactional(readOnly = true)
-    public List<EstudianteDTO> findByCiudadCarrera(String ciudad, String carrera) {
+    public List<EstudianteDTO> findByCiudadAndCarrera(String ciudad, String carrera) {
         return estudianteRepository.getEstudiantesByCiudadAndCarrera(ciudad, carrera);
     }
 

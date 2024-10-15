@@ -1,6 +1,8 @@
 package org.tudai.entregable3.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.tudai.entregable3.dto.CarreraConCantidadInscriptosDTO;
@@ -14,18 +16,22 @@ import java.util.List;
 @RequestMapping("/carreras")
 public class CarreraController {
 
-    private CarreraService carreraService;
+    private final CarreraService carreraService;
 
     @Autowired
     public CarreraController(CarreraService carreraService) {
         this.carreraService = carreraService;
     }
 
-    @GetMapping("/carreraCantidadInscriptos")
-    public ResponseEntity<List<CarreraConCantidadInscriptosDTO>> getCarreraCantidadInscriptos() {
+    // f) recuperar las carreras con estudiantes inscriptos, y ordenar por cantidad de inscriptos
+    @GetMapping("/carrerasByCantidadInscriptos")
+    public ResponseEntity<List<CarreraConCantidadInscriptosDTO>> getCarrerasByCantidadInscriptos() {
         try {
-            List<CarreraConCantidadInscriptosDTO> list = carreraService.getCarreraCantidadInscriptos();
-            return ResponseEntity.ok(list);
+            List<CarreraConCantidadInscriptosDTO> carreras = carreraService.getCarrerasByCantidadInscriptos();
+            if (carreras.isEmpty()) {
+                return ResponseEntity.noContent().build(); // 204 No Content
+            }
+            return ResponseEntity.ok(carreras);
         } catch (Exception e) {
             return ResponseEntity.noContent().build();
         }
@@ -43,21 +49,26 @@ public class CarreraController {
 
     @GetMapping("/")
     public ResponseEntity<List<CarreraDTO>> findAll() {
-        try{
+        try {
             List<CarreraDTO> carreras = carreraService.findAll();
+            if (carreras.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
             return ResponseEntity.ok(carreras);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CarreraDTO> findById(@PathVariable Long id) {
-        try{
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        try {
             CarreraDTO carrera = carreraService.findById(id);
             return ResponseEntity.ok(carrera);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró la carrera con el id " + id);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.internalServerError().body("Ocurrió un error inesperado");
         }
     }
 

@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/inscripciones")
 public class InscripcionController {
 
-    private InscripcionService inscripcionService;
+    private final InscripcionService inscripcionService;
 
     @Autowired
     public InscripcionController(InscripcionService inscripcionService) {
@@ -29,16 +29,25 @@ public class InscripcionController {
     public ResponseEntity<List<InscripcionDTO>> findAll() {
         try{
             List<InscripcionDTO> inscripciones = inscripcionService.findAll();
+            if (inscripciones.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
             return ResponseEntity.ok(inscripciones);
         }catch (Exception e){
            return ResponseEntity.internalServerError().build();
         }
     }
 
+    // h) generar un reporte de las carreras, que para cada carrera incluya información de los
+    // inscriptos y egresados por año. Se deben ordenar las carreras alfabéticamente, y
+    // presentar los años de manera cronológica.
     @GetMapping("/reporteCarreras")
     public ResponseEntity<List<ReporteCarreraDTO>> getReporteCarreras() {
         try {
             List<ReporteCarreraDTO> reporte = inscripcionService.getReporteCarreras();
+            if (reporte.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
             return ResponseEntity.ok(reporte);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();

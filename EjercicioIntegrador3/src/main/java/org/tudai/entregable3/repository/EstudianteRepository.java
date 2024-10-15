@@ -12,10 +12,10 @@ import java.util.List;
 public interface EstudianteRepository extends JpaRepository<Estudiante, Long> {
 
     @Query("SELECT new org.tudai.entregable3.dto.EstudianteDTO (e.nombres,e.apellido,e.anioNacimiento,e.genero,e.dni,e.ciudadResidencia,e.libretaUniv) FROM Estudiante e WHERE e.nombres=:nombre")
-    EstudianteDTO findByNombre(String nombre);
+    List<EstudianteDTO> findByNombre(String nombre);
 
     @Query("SELECT new org.tudai.entregable3.dto.EstudianteDTO (e.nombres,e.apellido,e.anioNacimiento,e.genero,e.dni,e.ciudadResidencia,e.libretaUniv) FROM Estudiante e WHERE e.apellido=:apellido")
-    EstudianteDTO findByApellido(String apellido);
+    List<EstudianteDTO> findByApellido(String apellido);
 
     //c) recuperar todos los estudiantes, y especificar algún criterio de ordenamiento simple.
     @Query("SELECT new org.tudai.entregable3.dto.EstudianteDTO (e.nombres,e.apellido,e.anioNacimiento,e.genero,e.dni,e.ciudadResidencia,e.libretaUniv) FROM Estudiante e ORDER BY e.nombres")
@@ -26,7 +26,7 @@ public interface EstudianteRepository extends JpaRepository<Estudiante, Long> {
     EstudianteDTO getEstudianteByNumeroLibreta(@Param("libretaU") long libretaU  );
 
     //e) recuperar todos los estudiantes, en base a su género.
-    @Query("SELECT new org.tudai.entregable3.dto.EstudianteDTO(e.nombres,e.apellido,e.anioNacimiento,e.genero,e.dni,e.ciudadResidencia,e.libretaUniv) FROM Estudiante e WHERE e.genero =:genero")
+    @Query("SELECT new org.tudai.entregable3.dto.EstudianteDTO(e.nombres, e.apellido, e.anioNacimiento, e.genero, e.dni, e.ciudadResidencia, e.libretaUniv) FROM Estudiante e WHERE e.genero =:genero")
     List<EstudianteDTO> getEstudiantesByGenero(@Param("genero")String genero);
 
     //g) recuperar los estudiantes de una determinada carrera, filtrado por ciudad de residencia.

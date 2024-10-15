@@ -9,14 +9,14 @@ public class ReporteCarreraDTO {
 
     private String nombreCarrera;
     private int anio;
-    private Integer cantInscriptos;
-    private Integer cantEgresados;
+    private long cantInscriptos;
+    private long cantEgresados;
 
     public ReporteCarreraDTO(String nombreCarrera, int anio, long cantInscriptos, long cantEgresados) {
         this.nombreCarrera = nombreCarrera;
         this.anio = anio;
-        this.cantInscriptos = (int) cantInscriptos;
-        this.cantEgresados = (int) cantEgresados;
+        this.cantInscriptos =  cantInscriptos;
+        this.cantEgresados =  cantEgresados;
     }
 
     @Override

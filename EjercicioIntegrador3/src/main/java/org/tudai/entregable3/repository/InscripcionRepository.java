@@ -18,14 +18,14 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Long> 
     // inscriptos y egresados por año. Se deben ordenar las carreras alfabéticamente, y
     // presentar los años de manera cronológica.
     @Transactional
-    @Query("SELECT new org.tudai.entregable3.dto.ReporteCarreraDTO(c.nombre, i.anioInscripcion, COUNT(i), 0L) " +
+    @Query("SELECT new org.tudai.entregable3.dto.ReporteCarreraDTO(c.nombre, i.anioInscripcion, COUNT(i), 0) " +
             "FROM Inscripcion i JOIN i.carrera c " +
             "GROUP BY c.nombre, i.anioInscripcion " +
             "ORDER BY c.nombre ASC, i.anioInscripcion ASC")
     List<ReporteCarreraDTO> getInscriptosPorAnio();
 
     @Transactional
-    @Query("SELECT new org.tudai.entregable3.dto.ReporteCarreraDTO(c.nombre, i.anioEgreso, 0L, COUNT(i)) " +
+    @Query("SELECT new org.tudai.entregable3.dto.ReporteCarreraDTO(c.nombre, i.anioEgreso, 0, COUNT(i)) " +
             "FROM Inscripcion i JOIN i.carrera c " +
             "WHERE i.anioEgreso IS NOT NULL " +
             "GROUP BY c.nombre, i.anioEgreso " +
@@ -41,8 +41,6 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Long> 
                                @Param("estudianteId") Long estudianteId,
                                @Param("carreraId") Long carreraId);
 
-    @Transactional
-    @Query("SELECT i FROM Inscripcion i WHERE i.estudiante.id = :estudianteId AND i.carrera.id = :carreraId")
-    Inscripcion findByEstudianteIdAndCarreraId(@Param("estudianteId") Long estudianteId, @Param("carreraId") Long carreraId);
+
 }
 
