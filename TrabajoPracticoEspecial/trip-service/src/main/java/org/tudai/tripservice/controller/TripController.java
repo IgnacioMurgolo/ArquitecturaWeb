@@ -1,0 +1,82 @@
+package org.tudai.tripservice.controller;
+
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.tudai.tripservice.dto.TripDTO;
+import org.tudai.tripservice.service.TripService;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/trips")
+public class TripController {
+    private final TripService tripService;
+
+    @Autowired
+    public TripController(TripService tripService) {
+        this.tripService = tripService;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerTrip(@RequestBody TripDTO tripDTO) {
+        try {
+            tripService.save(tripDTO);
+            return ResponseEntity.ok(tripDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/account/{accountId}")
+    public List<TripDTO> getTripsByAccountId(@PathVariable Long accountId) {
+        return tripService.findTripsByAccountId(accountId);
+    }
+
+    @GetMapping("/tripByAccountId/{accountId}")
+    public TripDTO getTripByAccountId(@PathVariable Long accountId) {
+        return tripService.getTripWithAccount(accountId);
+    }
+
+    @GetMapping("/{tripId}/with-pause-time")
+    public TripDTO getTripWithPauseTime(@PathVariable Long tripId) {
+        return tripService.getTripWithPauseTime(tripId);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<?> getAll() {
+        try {
+            List<TripDTO> trips = tripService.getAll();
+            if (trips.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok().body(trips);
+        } catch (RuntimeException e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        try {
+            tripService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error interno del servidor");
+        }
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody TripDTO tripDTO) {
+        try {
+            tripService.updateById(id, tripDTO);
+            return ResponseEntity.ok("Usuario actualizado exitosamente");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error al actualizar el estudiante");
+        }
+    }
+
+}

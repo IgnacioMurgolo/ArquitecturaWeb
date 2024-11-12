@@ -23,20 +23,6 @@ public class CarreraController {
         this.carreraService = carreraService;
     }
 
-    // f) recuperar las carreras con estudiantes inscriptos, y ordenar por cantidad de inscriptos
-    @GetMapping("/carrerasByCantidadInscriptos")
-    public ResponseEntity<List<CarreraConCantidadInscriptosDTO>> getCarrerasByCantidadInscriptos() {
-        try {
-            List<CarreraConCantidadInscriptosDTO> carreras = carreraService.getCarrerasByCantidadInscriptos();
-            if (carreras.isEmpty()) {
-                return ResponseEntity.noContent().build(); // 204 No Content
-            }
-            return ResponseEntity.ok(carreras);
-        } catch (Exception e) {
-            return ResponseEntity.noContent().build();
-        }
-    }
-
     @PostMapping("/registrar")
     public ResponseEntity<Void> save(@RequestBody Carrera carrera) {
         try {
@@ -93,4 +79,17 @@ public class CarreraController {
         }
     }
 
+    // f) recuperar las carreras con estudiantes inscriptos, y ordenar por cantidad de inscriptos
+    @GetMapping("/carrerasByCantidadInscriptos")
+    public ResponseEntity<List<CarreraConCantidadInscriptosDTO>> getCarrerasByCantidadInscriptos() {
+        try {
+            List<CarreraConCantidadInscriptosDTO> carreras = carreraService.getCarrerasByCantidadInscriptos();
+            if (carreras.isEmpty()) {
+                return ResponseEntity.noContent().build(); // 204 No Content
+            }
+            return ResponseEntity.ok(carreras);
+        } catch (Exception e) {
+            return ResponseEntity.noContent().build();
+        }
+    }
 }

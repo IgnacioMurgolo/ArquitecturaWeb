@@ -1,0 +1,15 @@
+package org.tudai.userservice.feign;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.tudai.tripservice.dto.TripDTO;
+
+import java.util.List;
+
+@FeignClient(name = "trip-service")
+public interface TripClient {
+
+    @GetMapping("/trips/account/{accountId}")
+    List<TripDTO> getTripsByAccountId(@PathVariable("accountId") Long accountId);
+}
