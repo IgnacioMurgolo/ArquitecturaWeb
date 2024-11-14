@@ -1,10 +1,9 @@
 package org.tudai.adminservice.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -16,12 +15,23 @@ public class Admin {
     private String email;
     private Double pricePerKm;
     private Double extraPricePause;
+    private Double futurePrice;         // Precio futuro que será efectivo en la fecha indicada
+    private LocalDate effectiveDate;    // Fecha de efectividad para el nuevo precio
 
     public Admin(String name, String email, Double pricePerKm, Double extraPricePause) {
         this.name = name;
         this.email = email;
         this.pricePerKm = pricePerKm;
         this.extraPricePause = extraPricePause;
+    }
+
+    public Admin(String name, String email, Double pricePerKm, Double extraPricePause, LocalDate effectiveDate, Double futurePrice) {
+        this.name = name;
+        this.email = email;
+        this.pricePerKm = pricePerKm;
+        this.extraPricePause = extraPricePause;
+        this.effectiveDate = effectiveDate;
+        this.futurePrice = futurePrice;
     }
 
     public Admin() {}

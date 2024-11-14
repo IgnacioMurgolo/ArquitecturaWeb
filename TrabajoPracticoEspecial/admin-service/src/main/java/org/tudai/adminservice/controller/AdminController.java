@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.tudai.adminservice.dto.AdminDTO;
 import org.tudai.adminservice.service.AdminService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController("/admins")
@@ -37,6 +38,15 @@ public class AdminController {
         } catch (RuntimeException e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
+    }
+
+    // f. Ajuste de precios para habilitar a partir de cierta fecha
+    @PutMapping("/adjust-prices")
+    public ResponseEntity<Void> adjustPrices(
+            @RequestParam Double newPrice,
+            @RequestParam LocalDate effectiveDate) {
+        adminService.setFuturePrice(newPrice, effectiveDate);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")

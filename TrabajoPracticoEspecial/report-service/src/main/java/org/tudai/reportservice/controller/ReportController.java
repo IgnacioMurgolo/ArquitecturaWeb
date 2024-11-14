@@ -3,6 +3,8 @@ package org.tudai.reportservice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.tudai.reportservice.dto.BenefitsBetweenMonthsDTO;
+import org.tudai.reportservice.dto.ScooterReportTripYearDTO;
 import org.tudai.reportservice.dto.ScooterStatusReportDTO;
 import org.tudai.reportservice.dto.ScooterUsageReportDTO;
 import org.tudai.reportservice.service.ReportService;
@@ -43,15 +45,20 @@ public class ReportController {
 
     // c. Consultar monopatines con más de X viajes en un cierto año
     @GetMapping("/scooters-with-min-trips")
-    public List<ScooterDTO> getScootersWithMinTrips(
+    public ResponseEntity<List<ScooterReportTripYearDTO>> getScootersWithMinTrips(
             @RequestParam int year,
             @RequestParam int minTrips) {
-        return reportService.getScootersWithMoreThanXTrips(year, minTrips);
+        try{
+            List<ScooterReportTripYearDTO> report = reportService.getScootersWithMoreThanXTrips(year, minTrips);
+            return ResponseEntity.ok(report);
+        } catch (RuntimeException e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     // d. Consultar el total facturado en un rango de meses de un año
     @GetMapping("/total-revenue")
-    public BigDecimal getTotalRevenue(
+    public List<BenefitsBetweenMonthsDTO> getTotalRevenue(
             @RequestParam int year,
             @RequestParam int startMonth,
             @RequestParam int endMonth) {
@@ -70,21 +77,14 @@ public class ReportController {
     }
 
     // f. Ajuste de precios para habilitar a partir de cierta fecha
-    @PutMapping("/adjust-prices")
-    public ResponseEntity<Void> adjustPrices(
-            @RequestParam BigDecimal newPrice,
-            @RequestParam LocalDate effectiveDate) {
-        reportService.adjustPrices(newPrice, effectiveDate);
-        return ResponseEntity.ok().build();
-    }
+    //   ESTA DESDE ADMIN
 
     // g. Listado de monopatines cercanos a una ubicación
     @GetMapping("/nearby-scooters")
     public List<ScooterDTO> findNearbyScooters(
-            @RequestParam Double latitude,
-            @RequestParam Double longitude,
-            @RequestParam Double radius) {
-        return reportService.findNearbyScooters(latitude, longitude, radius);
+            @RequestParam String ubicacion
+            ) {
+        return reportService.findNearbyScooters(ubicacion);
     }
 }
 

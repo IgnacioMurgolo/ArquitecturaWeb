@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.tudai.tripservice.dto.BenefitsBetweenMonthsDTO;
 import org.tudai.tripservice.dto.TripDTO;
 import org.tudai.tripservice.service.TripService;
 
@@ -54,6 +55,29 @@ public class TripController {
             return ResponseEntity.ok().body(trips);
         } catch (RuntimeException e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/countByScooterAndYear")
+    public ResponseEntity<Long> countScooterTripByScooterAndYear(@RequestParam Long scooterId, @RequestParam int year) {
+        try {
+            Long count = tripService.countScooterTripByScooterAndYear(scooterId, year);
+            return ResponseEntity.ok(count);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/benefitsByYearBetweenMonth")
+    public ResponseEntity<List<BenefitsBetweenMonthsDTO>> getBenefitsReport(@RequestParam int year, @RequestParam int startMonth, @RequestParam int endMonth) {
+        try {
+            List<BenefitsBetweenMonthsDTO> benefits = tripService.getBenefitsReport(year, startMonth, endMonth);
+            if (benefits.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(benefits);
+        } catch (RuntimeException e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 

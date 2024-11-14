@@ -8,6 +8,7 @@ import org.tudai.adminservice.dto.AdminDTO;
 import org.tudai.adminservice.entity.Admin;
 import org.tudai.adminservice.repository.AdminRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class AdminService {
         adminRepository.save(admin);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<AdminDTO> getAll() {
         List<AdminDTO> result = new ArrayList<>();
         List<Admin> admins = adminRepository.findAll();
@@ -35,6 +36,36 @@ public class AdminService {
             result.add(adminDTO);
         }
         return result;
+    }
+
+    public Double getEffectivePricePerKm() {
+        Admin admin = adminRepository.findById(1L) // Suponiendo que solo tienes un admin
+                .orElseThrow(() -> new EntityNotFoundException("Admin not found"));
+
+        LocalDate today = LocalDate.now();
+
+        // Verifica si la fecha actual es igual o posterior a effectiveDate
+        if (admin.getEffectiveDate() != null && !today.isBefore(admin.getEffectiveDate())) {
+            // Actualiza el precio actual y limpia los valores de precio futuro y fecha
+            admin.setPricePerKm(admin.getFuturePrice());
+            admin.setFuturePrice(null);
+            admin.setEffectiveDate(null);
+            adminRepository.save(admin);
+        }
+
+        return admin.getPricePerKm();
+    }
+
+    @Transactional
+    public void setFuturePrice(Double newPrice, LocalDate effectiveDate) {
+        Admin admin = adminRepository.findById(1L) // Suponiendo que solo hay un admin
+                .orElseThrow(() -> new EntityNotFoundException("Admin not found"));
+
+        // Establece el precio futuro y la fecha de efectividad
+        admin.setFuturePrice(newPrice);
+        admin.setEffectiveDate(effectiveDate);
+        adminRepository.save(admin);
+        this.getEffectivePricePerKm();
     }
 
     @Transactional

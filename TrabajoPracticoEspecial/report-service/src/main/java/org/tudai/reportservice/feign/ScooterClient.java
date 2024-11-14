@@ -3,6 +3,7 @@ package org.tudai.reportservice.feign;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.tudai.scooterservice.dto.ScooterDTO;
+import org.tudai.scooterservice.dto.ScooterReportDTO;
 
 import java.util.List;
 
@@ -11,6 +12,9 @@ public interface ScooterClient {
 
     @GetMapping("/")
     List<ScooterDTO> getAll();
+
+    @GetMapping
+    List<ScooterReportDTO> getAllReport();
 
     @GetMapping("/operationalScooters")
     Long countOperationalScooters();

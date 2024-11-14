@@ -22,18 +22,20 @@ public class Trip {
     private Double distanceTraveled;
     private Double duration;
     private Double creditsConsumed;
+    private Long scooterId;
     @ElementCollection
     private List<Long> pausesId; // PARA LA RELACION CON Pause
 
     public Trip() {}
 
-    public Trip(Long accountId, Date startDateTime, Date endDateTime, Double distanceTraveled, Double duration, Double creditsConsumed) {
+    public Trip(Long accountId, Date startDateTime, Date endDateTime, Double distanceTraveled, Double duration, Double creditsConsumed, Long scooterId) {
         this.accountId = accountId;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.distanceTraveled = distanceTraveled;
         this.duration = duration;
         this.creditsConsumed = creditsConsumed;
+        this.scooterId = scooterId;
         this.pausesId = new ArrayList<>();
     }
 }

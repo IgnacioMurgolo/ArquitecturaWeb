@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.tudai.tripservice.dto.BenefitsBetweenMonthsDTO;
 import org.tudai.tripservice.dto.TripDTO;
 import org.tudai.tripservice.entitity.Pause;
 import org.tudai.tripservice.entitity.Trip;
@@ -31,7 +32,7 @@ public class TripService {
     @Transactional
     public TripDTO save(TripDTO tripDTO) {
         Trip newTrip = new Trip(tripDTO.getAccountId(), tripDTO.getStartDateTime(), tripDTO.getEndDateTime(),
-                tripDTO.getDistanceTraveled(), tripDTO.getDuration(), tripDTO.getCreditsConsumed());
+                tripDTO.getDistanceTraveled(), tripDTO.getDuration(), tripDTO.getCreditsConsumed(), tripDTO.getScooterId());
         newTrip = tripRepository.save(newTrip);
         return new TripDTO(newTrip);
     }
@@ -129,4 +130,12 @@ public class TripService {
         return new TripDTO(trip);
     }
 
+    public Long countScooterTripByScooterAndYear(Long scooterId, int year) {
+        return tripRepository.countTripByScooterAndYear(scooterId, year);
+    }
+
+    public List<BenefitsBetweenMonthsDTO>getBenefitsReport(int year,int startMonth,int endMonth){
+        List<BenefitsBetweenMonthsDTO> benefits = tripRepository.getBenefitsReport(year,startMonth,endMonth);
+         return benefits;
+    }
 }

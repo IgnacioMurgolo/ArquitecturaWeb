@@ -21,17 +21,19 @@ public class TripDTO {
     private Double duration;
     private Double creditsConsumed;
     private long pauseTime;
+    private Long scooterId;
 
     public TripDTO() {
     }
 
-    public TripDTO(Long accountId,Date startDateTime, Date endDateTime, Double distanceTraveled, Double duration, Double creditsConsumed) {
+    public TripDTO(Date startDateTime, Date endDateTime, Double distanceTraveled, Double duration, Double creditsConsumed, Long accountId, Long scooterId) {
         this.accountId = accountId;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.distanceTraveled = distanceTraveled;
         this.duration = duration;
         this.creditsConsumed = creditsConsumed;
+        this.scooterId = scooterId;
     }
 
     public TripDTO(Trip trip) {
