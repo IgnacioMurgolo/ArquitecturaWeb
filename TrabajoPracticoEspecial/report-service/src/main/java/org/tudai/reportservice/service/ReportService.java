@@ -13,7 +13,6 @@ import org.tudai.scooterservice.dto.ScooterDTO;
 import org.tudai.scooterservice.dto.ScooterReportDTO;
 import org.tudai.tripservice.dto.TripDTO;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,13 +81,12 @@ public class ReportService {
 
     }
 
-    public List<BenefitsBetweenMonthsDTO>getTotalRevenue(int year, int startMonth, int endMonth){
-        List<BenefitsBetweenMonthsDTO>benefits = tripClient.getBenefitsReport(year,startMonth,endMonth);
-        return benefits;
+    public List<BenefitsBetweenMonthsDTO> getTotalRevenue(int year, int startMonth, int endMonth) {
+        return tripClient.getBenefitsReport(year, startMonth, endMonth);
     }
 
     public ScooterStatusReportDTO getScooterStatusReport() {
-        // Llama a ScooterService para contar los scooters en operación y en mantenimiento
+        // Llama a ScooterService para contar los scooters en operación y en mantenimiento y lo muestra en dto.
         long operationalScooters = scooterClient.countOperationalScooters();
         long maintenanceScooters = scooterClient.countMaintenanceScooters();
 
@@ -96,9 +94,7 @@ public class ReportService {
     }
 
     public List<ScooterDTO> findNearbyScooters(String ubicacion) {
-        // Llama a ScooterService para obtener los scooters dentro del radio especificado
-        return List.of();
+        return scooterClient.getScootersByLocation(ubicacion);
     }
-
 
 }

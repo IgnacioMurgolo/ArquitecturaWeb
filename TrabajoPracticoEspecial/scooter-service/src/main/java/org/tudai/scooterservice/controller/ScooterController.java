@@ -67,13 +67,18 @@ public class ScooterController {
         }
     }
 
+    @GetMapping("/nearby")
+    public List<ScooterDTO> getScootersByLocation(@RequestParam String ubicacion) {
+        return scooterService.findNearbyScooters(ubicacion);
+    }
+
     @GetMapping("/operationalScooters")
-    public Long countOperationalScooters(){
+    public Long countOperationalScooters() {
         return scooterService.countOperationalScooters();
     }
 
     @GetMapping("/maintenanceScooters")
-    public Long countMaintenanceScooters(){
+    public Long countMaintenanceScooters() {
         return scooterService.countMaintenanceScooters();
     }
 
@@ -90,7 +95,7 @@ public class ScooterController {
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable Long id, @RequestBody ScooterDTO scooter) {
         try {
-             scooterService.updateById(id, scooter);
+            scooterService.updateById(id, scooter);
             return ResponseEntity.ok("Scooter actualizado exitosamente");
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Error al actualizar el scooter");

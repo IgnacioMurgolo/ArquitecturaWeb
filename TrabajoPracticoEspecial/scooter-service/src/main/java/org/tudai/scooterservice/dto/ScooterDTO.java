@@ -18,16 +18,6 @@ public class ScooterDTO {
     private Long currentTripId;
     private List<Long> maintenanceRecordIds;
 
-    public ScooterDTO(Scooter newScooter) {
-        this.id = newScooter.getId();
-        this.status = newScooter.isStatus();
-        this.ubication = newScooter.getUbication();
-        this.kilometersTraveled = newScooter.getKilometersTraveled();
-        this.hoursUsed = newScooter.getHoursUsed();
-        this.currentStationId = newScooter.getCurrentStationId();
-        this.currentTripId = newScooter.getCurrentTripId();
-        this.maintenanceRecordIds = newScooter.getMaintenanceIds();
-    }
 
     public ScooterDTO() { }
 }

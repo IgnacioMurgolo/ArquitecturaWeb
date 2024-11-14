@@ -10,8 +10,6 @@ import org.tudai.reportservice.dto.ScooterUsageReportDTO;
 import org.tudai.reportservice.service.ReportService;
 import org.tudai.scooterservice.dto.ScooterDTO;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController

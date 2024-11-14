@@ -13,6 +13,7 @@ import org.tudai.scooterservice.repository.ScooterRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ScooterService {
@@ -72,7 +73,7 @@ public class ScooterService {
         newScooter.setKilometersTraveled(scooterDTO.getKilometersTraveled());
 
         newScooter = scooterRepository.save(newScooter);
-        return new ScooterDTO(newScooter);
+        return convertToDto(newScooter);
     }
 
     @Transactional
@@ -117,8 +118,27 @@ public class ScooterService {
     }
 
     private ScooterDTO convertToDto(Scooter scooter) {
-        ScooterDTO dto = new ScooterDTO(scooter);
+        ScooterDTO dto = new ScooterDTO();
+        dto.setStatus(scooter.isStatus());
+        dto.setUbication(scooter.getUbication());
+        dto.setHoursUsed(scooter.getHoursUsed());
+        dto.setKilometersTraveled(scooter.getKilometersTraveled());
+        dto.setCurrentStationId(scooter.getCurrentStationId());
+        dto.setCurrentTripId(scooter.getCurrentTripId());
+        dto.setMaintenanceRecordIds(scooter.getMaintenanceIds());
+
         return dto;
     }
+
+    public List<ScooterDTO> findNearbyScooters(String ubicacion) {
+        // Busca scooters cuyas ubicaciones contengan la cadena de ubicación solicitada
+        List<Scooter> scooters = scooterRepository.findByUbicationContainingIgnoreCase(ubicacion);
+
+        // Convertir los scooters encontrados a DTOs
+        return scooters.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
 
 }
