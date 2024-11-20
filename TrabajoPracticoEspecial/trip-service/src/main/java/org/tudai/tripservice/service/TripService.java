@@ -11,7 +11,7 @@ import org.tudai.tripservice.entitity.Trip;
 import org.tudai.tripservice.feign.AccountClient;
 import org.tudai.tripservice.repository.PauseRepository;
 import org.tudai.tripservice.repository.TripRepository;
-import org.tudai.userservice.dto.AccountDTO;
+import org.tudai.tripservice.dto.AccountDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class TripService {
                 .orElseThrow(() -> new EntityNotFoundException("Trip not found with id " + tripId));
         AccountDTO account = accountClient.getAccountById(trip.getAccountId());
 
-        return new TripDTO(trip.getStartDateTime(), trip.getEndDateTime(), trip.getDistanceTraveled(), trip.getDuration(), trip.getCreditsConsumed(), account);
+        return new TripDTO(trip.getStartDateTime(), trip.getEndDateTime(), trip.getDistanceTraveled(), trip.getDuration(), trip.getCreditsConsumed());
     }
 
     @Transactional
@@ -51,7 +51,6 @@ public class TripService {
         AccountDTO account = accountClient.getAccountById(accountId);
         List<TripDTO> result = tripRepository.getTripsByAccountId(accountId);
         for (TripDTO trip : result) {
-            trip.setAccount(account);
             result.add(trip);
         }
         return result;
@@ -135,7 +134,6 @@ public class TripService {
     }
 
     public List<BenefitsBetweenMonthsDTO>getBenefitsReport(int year,int startMonth,int endMonth){
-        List<BenefitsBetweenMonthsDTO> benefits = tripRepository.getBenefitsReport(year,startMonth,endMonth);
-         return benefits;
+        return tripRepository.getBenefitsReport(year,startMonth,endMonth);
     }
 }

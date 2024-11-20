@@ -7,5 +7,4 @@ import org.tudai.scooterservice.entity.Station;
 @Repository
 public interface StationRepository extends JpaRepository<Station, Long> {
 
-
 }

@@ -15,9 +15,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/reports")
 public class ReportController {
-    private final ReportService reportService;
-
     @Autowired
+    private ReportService reportService;
+
     public ReportController(ReportService reportService) {
         this.reportService = reportService;
     }

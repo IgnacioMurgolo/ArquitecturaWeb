@@ -1,6 +1,5 @@
 package org.tudai.reportservice.feign;
 
-
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +14,11 @@ public interface TripClient {
     @GetMapping("/trips/scooter/{scooterId}")
     List<TripDTO> getTripsByScooterId(@PathVariable("scooterId") Long scooterId);
 
-
     @GetMapping("/trips/countByScooterAndYear")
     Long countScooterTripByScooterAndYear(@RequestParam Long scooterId, @RequestParam int year);
 
     @GetMapping("/trips/benefitsByYearBetweenMonth")
-    List<BenefitsBetweenMonthsDTO> getBenefitsReport(int year, int startMonth, int endMonth);
+    List<BenefitsBetweenMonthsDTO> getBenefitsReport(@RequestParam int year, @RequestParam int startMonth, @RequestParam int endMonth);
+
 }
 

@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.tudai.tripservice.entitity.Trip;
-import org.tudai.userservice.dto.AccountDTO;
 
 import java.util.Date;
 
@@ -14,7 +13,6 @@ import java.util.Date;
 public class TripDTO {
     private Long id;
     private Long accountId; // Solo el ID
-    private AccountDTO account; // El DTO completo para mostrar
     private Date startDateTime;
     private Date endDateTime;
     private Double distanceTraveled;
@@ -45,12 +43,11 @@ public class TripDTO {
         this.creditsConsumed = trip.getCreditsConsumed();
     }
 
-    public TripDTO(Date startDateTime, Date endDateTime, Double distanceTraveled, Double duration, Double creditsConsumed, AccountDTO account) {
+    public TripDTO(Date startDateTime, Date endDateTime, Double distanceTraveled, Double duration, Double creditsConsumed) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.distanceTraveled = distanceTraveled;
         this.duration = duration;
         this.creditsConsumed = creditsConsumed;
-        this.account = account;
     }
 }

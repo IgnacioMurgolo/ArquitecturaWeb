@@ -68,9 +68,9 @@ public class ReportService {
     }
 
     public List<ScooterReportTripYearDTO> getScootersWithMoreThanXTrips(int year, int mintrips) {
-        List<ScooterReportDTO> scooters = scooterClient.getAllReport();
+        List<ScooterDTO> scooters = scooterClient.getAll();
         List<ScooterReportTripYearDTO> scoots = new ArrayList<>();
-        for (ScooterReportDTO scooterDTO : scooters) {
+        for (ScooterDTO scooterDTO : scooters) {
             Long count = tripClient.countScooterTripByScooterAndYear(scooterDTO.getId(), year);
             if (count >= mintrips) {
                 ScooterReportTripYearDTO scootDTO = new ScooterReportTripYearDTO(Math.toIntExact(scooterDTO.getId()), count, scooterDTO.getKilometersTraveled());
@@ -78,7 +78,6 @@ public class ReportService {
             }
         }
         return scoots;
-
     }
 
     public List<BenefitsBetweenMonthsDTO> getTotalRevenue(int year, int startMonth, int endMonth) {

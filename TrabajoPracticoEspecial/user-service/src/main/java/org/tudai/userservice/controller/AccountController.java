@@ -3,7 +3,7 @@ package org.tudai.userservice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.tudai.tripservice.dto.TripDTO;
+import org.tudai.userservice.dto.TripDTO;
 import org.tudai.userservice.dto.AccountDTO;
 import org.tudai.userservice.entity.Account;
 import org.tudai.userservice.service.AccountService;

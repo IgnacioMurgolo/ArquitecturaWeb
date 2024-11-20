@@ -9,7 +9,6 @@ import org.tudai.maintenanceservice.dto.ScooterDTO;
 @FeignClient(name = "scooter")
 public interface ScooterClient {
 
-
     @GetMapping("/scooters/{id}")
     ScooterDTO findById(@PathVariable("id") Long id);
 
@@ -18,6 +17,5 @@ public interface ScooterClient {
 
     @PatchMapping("/scooters/end-maintenance/{scooterId}")
     Void endMaintenance(@PathVariable("scooterId") Long scooterId);
-
 
 }

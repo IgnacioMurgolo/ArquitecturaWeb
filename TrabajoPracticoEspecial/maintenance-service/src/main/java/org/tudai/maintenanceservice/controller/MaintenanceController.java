@@ -15,11 +15,9 @@ public class MaintenanceController {
     private final MaintenanceService maintenanceService;
 
     @Autowired
-    public MaintenanceController(MaintenanceService maintenanceService) {
-        this.maintenanceService = maintenanceService;
-    }
+    public MaintenanceController(MaintenanceService maintenanceService) {this.maintenanceService = maintenanceService;}
 
-    @GetMapping("/register")
+    @PostMapping("/register")
     public ResponseEntity<?> registerMaintenance(MaintenanceDTO maintenance) {
         try {
             maintenanceService.save(maintenance);

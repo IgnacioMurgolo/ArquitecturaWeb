@@ -4,23 +4,19 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.tudai.scooterservice.dto.ScooterDTO;
-import org.tudai.scooterservice.dto.ScooterReportDTO;
 
 import java.util.List;
 
 @FeignClient(name = "scooter-service")
 public interface ScooterClient {
 
-    @GetMapping("/")
+    @GetMapping("/scooters/")
     List<ScooterDTO> getAll();
 
-    @GetMapping
-    List<ScooterReportDTO> getAllReport();
-
-    @GetMapping("/operationalScooters")
+    @GetMapping("/scooters/operationalScooters")
     Long countOperationalScooters();
 
-    @GetMapping("/maintenanceScooters")
+    @GetMapping("/scooters/maintenanceScooters")
     Long countMaintenanceScooters();
 
     @GetMapping("/scooters/nearby")
