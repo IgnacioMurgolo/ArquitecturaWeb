@@ -9,9 +9,8 @@ import org.tudai.reportservice.dto.ScooterUsageReportDTO;
 import org.tudai.reportservice.feign.ScooterClient;
 import org.tudai.reportservice.feign.TripClient;
 import org.tudai.reportservice.feign.UserClient;
-import org.tudai.scooterservice.dto.ScooterDTO;
-import org.tudai.scooterservice.dto.ScooterReportDTO;
-import org.tudai.tripservice.dto.TripDTO;
+import org.tudai.reportservice.dto.ScooterDTO;
+import org.tudai.reportservice.dto.TripDTO;
 
 import java.util.ArrayList;
 import java.util.List;

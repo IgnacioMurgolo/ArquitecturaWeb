@@ -74,7 +74,7 @@ public class MaintenanceService {
         Maintenance maintenance = maintenanceRepository.findById(maintenanceId).orElseThrow(() -> new EntityNotFoundException("Maintenance not found with id " + maintenanceId));
         maintenance.setScooterId(scooterId);
         maintenance.setMaintenanceDate(new Date());
-        maintenance.setMaintenanceStatus("en mantenimiento");
+        maintenance.setMaintenanceStatus("In Progress");
         scooterClient.onMaintenance(scooterId);
         maintenanceRepository.save(maintenance);
     }
@@ -82,7 +82,7 @@ public class MaintenanceService {
     @Transactional
     public void endMaintenance(Long maintenanceId) {
         Maintenance maintenance = maintenanceRepository.findById(maintenanceId).orElseThrow(() -> new EntityNotFoundException("Maintenance not found with id " + maintenanceId));
-        maintenance.setMaintenanceStatus("completado");
+        maintenance.setMaintenanceStatus("completed");
         Long scooterId = maintenance.getScooterId();
         scooterClient.endMaintenance(scooterId);
         maintenanceRepository.save(maintenance);

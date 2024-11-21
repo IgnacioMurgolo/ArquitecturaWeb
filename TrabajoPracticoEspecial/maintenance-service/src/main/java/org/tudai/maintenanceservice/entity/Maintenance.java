@@ -11,7 +11,6 @@ public class Maintenance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
     private Date maintenanceDate;
     private String maintenanceDescription;
     private String maintenanceStatus;

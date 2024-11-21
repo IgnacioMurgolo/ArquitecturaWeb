@@ -24,4 +24,5 @@ public class AccountDTO {
         this.tripsId = new ArrayList<>();
     }
 
+
 }

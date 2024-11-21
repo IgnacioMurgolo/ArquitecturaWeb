@@ -2,6 +2,7 @@ package org.tudai.tripservice.controller;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.tudai.tripservice.dto.BenefitsBetweenMonthsDTO;
@@ -31,17 +32,17 @@ public class TripController {
     }
 
     @GetMapping("/account/{accountId}")
-    public List<TripDTO> getTripsByAccountId(@PathVariable Long accountId) {
+    public List<TripDTO> getTripsByAccountId(@PathVariable String accountId) {
         return tripService.findTripsByAccountId(accountId);
     }
 
     @GetMapping("/tripByAccountId/{accountId}")
-    public TripDTO getTripByAccountId(@PathVariable Long accountId) {
+    public TripDTO getTripByAccountId(@PathVariable String accountId) {
         return tripService.getTripWithAccount(accountId);
     }
 
     @GetMapping("/{tripId}/with-pause-time")
-    public TripDTO getTripWithPauseTime(@PathVariable Long tripId) {
+    public TripDTO getTripWithPauseTime(@PathVariable String tripId) {
         return tripService.getTripWithPauseTime(tripId);
     }
 
@@ -82,7 +83,7 @@ public class TripController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable String id) {
         try {
             tripService.deleteById(id);
             return ResponseEntity.noContent().build();
@@ -94,7 +95,7 @@ public class TripController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody TripDTO tripDTO) {
+    public ResponseEntity<?> update(@PathVariable String id, @RequestBody TripDTO tripDTO) {
         try {
             tripService.updateById(id, tripDTO);
             return ResponseEntity.ok("Usuario actualizado exitosamente");

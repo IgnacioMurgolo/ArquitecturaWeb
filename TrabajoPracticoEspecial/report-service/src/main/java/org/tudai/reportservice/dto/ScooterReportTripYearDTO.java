@@ -1,5 +1,10 @@
 package org.tudai.reportservice.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ScooterReportTripYearDTO {
     private Integer scooterId;
     private Long tripCount;

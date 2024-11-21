@@ -1,25 +1,21 @@
 package org.tudai.tripservice.entitity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Data;
-
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
 
-@Entity
+@Document(collection = "pauses")
 @Data
 public class Pause {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private Date startPause;
     private Date endPause;
     private Boolean exceededTime;
-    private Long tripId;
+    private String tripId;
 
-    public Pause(Date startPause, Date endPause, Boolean exceededTime, Long tripId) {
+    public Pause(Date startPause, Date endPause, Boolean exceededTime, String tripId) {
         this.startPause = startPause;
         this.endPause = endPause;
         this.exceededTime = exceededTime;
@@ -27,4 +23,9 @@ public class Pause {
     }
 
     public Pause() {}
+
+    public Pause(Date date, Date date1) {
+        this.startPause = date;
+        this.endPause = date1;
+    }
 }

@@ -30,7 +30,7 @@ services:
       context: ./admin-service
       dockerfile: Dockerfile
     ports:
-      - "8081:8080" # Nuevo puerto asignado
+      - "8081:8080"
     depends_on:
       - mysql
     environment:
@@ -46,7 +46,7 @@ services:
       context: ./admin-service
       dockerfile: Dockerfile
     ports:
-      - "8082:8080" # Nuevo puerto asignado
+      - "8082:8080"
     depends_on:
       - mysql
     environment:
@@ -62,7 +62,7 @@ services:
       context: ./user-service
       dockerfile: Dockerfile
     ports:
-      - "8083:8080" # Nuevo puerto asignado
+      - "8083:8080"
     depends_on:
       - mysql
     environment:
@@ -78,7 +78,7 @@ services:
       context: ./user-service
       dockerfile: Dockerfile
     ports:
-      - "8084:8080" # Nuevo puerto asignado
+      - "8084:8080"
     depends_on:
       - mysql
     environment:
@@ -121,6 +121,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: ""
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
     networks:
       - microservices-network
 

@@ -45,7 +45,7 @@ public class AccountController {
     @GetMapping("/tripsByAccount/{id}")
     public ResponseEntity<?> getTripsByAccountId(@PathVariable Long id) {
         try {
-            List<TripDTO> tripDTOList = accountService.getTripsByAccountId(id);
+            List<TripDTO> tripDTOList = accountService.getTripsByAccountId(String.valueOf(id));
             if (tripDTOList.isEmpty())
                 return ResponseEntity.noContent().build();
             return ResponseEntity.ok().body(tripDTOList);

@@ -3,7 +3,7 @@ package org.tudai.reportservice.feign;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.tudai.scooterservice.dto.ScooterDTO;
+import org.tudai.reportservice.dto.ScooterDTO;
 
 import java.util.List;
 

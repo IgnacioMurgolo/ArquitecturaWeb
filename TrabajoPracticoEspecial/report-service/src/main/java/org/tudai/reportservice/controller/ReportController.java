@@ -8,7 +8,7 @@ import org.tudai.reportservice.dto.ScooterReportTripYearDTO;
 import org.tudai.reportservice.dto.ScooterStatusReportDTO;
 import org.tudai.reportservice.dto.ScooterUsageReportDTO;
 import org.tudai.reportservice.service.ReportService;
-import org.tudai.scooterservice.dto.ScooterDTO;
+import org.tudai.reportservice.dto.ScooterDTO;
 
 import java.util.List;
 

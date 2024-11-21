@@ -9,9 +9,9 @@ public class PauseDTO {
     private Date startPause;
     private Date endPause;
     private Boolean exceededTime;
-    private Long tripId;
+    private String tripId;
 
-    public PauseDTO(Date startPause, Date endPause, Boolean exceededTime, Long tripId) {
+    public PauseDTO(Date startPause, Date endPause, Boolean exceededTime, String tripId) {
         this.startPause = startPause;
         this.endPause = endPause;
         this.exceededTime = exceededTime;

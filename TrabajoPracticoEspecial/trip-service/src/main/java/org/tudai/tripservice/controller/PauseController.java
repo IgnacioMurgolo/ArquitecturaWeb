@@ -42,7 +42,7 @@ public class PauseController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable String id) {
         try {
             pauseService.deleteById(id);
             return ResponseEntity.noContent().build();
@@ -54,7 +54,7 @@ public class PauseController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody PauseDTO pauseDTO) {
+    public ResponseEntity<?> update(@PathVariable String id, @RequestBody PauseDTO pauseDTO) {
         try {
             pauseService.updateById(id, pauseDTO);
             return ResponseEntity.ok("Pausa actualizada exitosamente");
