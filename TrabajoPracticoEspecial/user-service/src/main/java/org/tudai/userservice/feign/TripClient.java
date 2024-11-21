@@ -11,5 +11,5 @@ import java.util.List;
 public interface TripClient {
 
     @GetMapping("/trips/account/{accountId}")
-    List<TripDTO> getTripsByAccountId(@PathVariable("accountId") Long accountId);
+    List<TripDTO> getTripsByAccountId(@PathVariable("accountId") String accountId);
 }

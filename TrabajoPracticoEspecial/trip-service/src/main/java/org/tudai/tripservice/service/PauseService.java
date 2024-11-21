@@ -1,6 +1,8 @@
 package org.tudai.tripservice.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +25,7 @@ public class PauseService {
     }
 
     @Transactional
-    public void save(PauseDTO pauseDTO) {
+    public void save(@NotNull PauseDTO pauseDTO) {
         Pause newPause = new Pause(pauseDTO.getStartPause(), pauseDTO.getEndPause(), pauseDTO.getExceededTime(), pauseDTO.getTripId());
         pauseRepository.save(newPause);
         tripService.setPauseIdToTrip(newPause.getId(), newPause.getTripId());
@@ -41,12 +43,12 @@ public class PauseService {
     }
 
     @Transactional
-    public void deleteById(Long pauseId) {
+    public void deleteById(String pauseId) {
         pauseRepository.deleteById(pauseId);
     }
 
     @Transactional
-    public void updateById(Long id, PauseDTO pauseDTO) {
+    public void updateById(String id, @NotNull PauseDTO pauseDTO) {
         Pause pauseUpdate = pauseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Pause not found with id " + id));
         pauseUpdate.setStartPause(pauseDTO.getStartPause());
         pauseUpdate.setEndPause(pauseDTO.getEndPause());
@@ -58,7 +60,8 @@ public class PauseService {
     }
 
 
-    private PauseDTO convertToDTO(Pause pause) {
+    @Contract("_ -> new")
+    private @NotNull PauseDTO convertToDTO(@NotNull Pause pause) {
         return new PauseDTO(pause.getStartPause(), pause.getEndPause(), pause.getExceededTime(), pause.getTripId());
     }
 

@@ -43,7 +43,7 @@ public class AccountService {
     }
 
     @Transactional
-    public List<TripDTO> getTripsByAccountId(Long accountId) {
+    public List<TripDTO> getTripsByAccountId(String accountId) {
         return tripClient.getTripsByAccountId(accountId);
     }
 

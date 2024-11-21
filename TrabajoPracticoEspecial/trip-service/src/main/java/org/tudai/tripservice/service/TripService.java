@@ -2,6 +2,7 @@ package org.tudai.tripservice.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.bson.Document;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tudai.tripservice.dto.BenefitsBetweenMonthsDTO;
@@ -9,12 +10,14 @@ import org.tudai.tripservice.dto.TripDTO;
 import org.tudai.tripservice.entitity.Pause;
 import org.tudai.tripservice.entitity.Trip;
 import org.tudai.tripservice.feign.AccountClient;
+import org.tudai.tripservice.repository.CustomTripRepositoryImpl;
 import org.tudai.tripservice.repository.PauseRepository;
 import org.tudai.tripservice.repository.TripRepository;
 import org.tudai.tripservice.dto.AccountDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TripService {
@@ -34,32 +37,41 @@ public class TripService {
         Trip newTrip = new Trip(tripDTO.getAccountId(), tripDTO.getStartDateTime(), tripDTO.getEndDateTime(),
                 tripDTO.getDistanceTraveled(), tripDTO.getDuration(), tripDTO.getCreditsConsumed(), tripDTO.getScooterId());
         newTrip = tripRepository.save(newTrip);
-        return new TripDTO(newTrip);
+        return convertToDTO(newTrip);
     }
 
     @Transactional
-    public TripDTO getTripWithAccount(Long tripId) {
+    public TripDTO getTripWithAccount(String tripId) {
         Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new EntityNotFoundException("Trip not found with id " + tripId));
-        AccountDTO account = accountClient.getAccountById(trip.getAccountId());
+        AccountDTO account = accountClient.getAccountById(Long.valueOf(trip.getAccountId()));
 
         return new TripDTO(trip.getStartDateTime(), trip.getEndDateTime(), trip.getDistanceTraveled(), trip.getDuration(), trip.getCreditsConsumed());
     }
 
     @Transactional
-    public List<TripDTO> findTripsByAccountId(Long accountId) {
-        AccountDTO account = accountClient.getAccountById(accountId);
-        List<TripDTO> result = tripRepository.getTripsByAccountId(accountId);
-        for (TripDTO trip : result) {
-            result.add(trip);
-        }
-        return result;
+    public List<TripDTO> findTripsByAccountId(String accountId) {
+        List<Trip> trips = tripRepository.findTripByAccountId(accountId);
+
+        // Mapea cada Trip a TripDTO
+        return trips.stream()
+                .map(trip -> new TripDTO(
+                        trip.getStartDateTime(),
+                        trip.getEndDateTime(),
+                        trip.getDistanceTraveled(),
+                        trip.getDuration(),
+                        trip.getCreditsConsumed(),
+                        trip.getAccountId(),
+                        trip.getScooterId()
+                ))
+                .collect(Collectors.toList());
     }
 
     @Transactional
-    public void setPauseIdToTrip(Long tripId, Long pauseId) {
+    public void setPauseIdToTrip(String tripId, String pauseId) {
         Trip trip = tripRepository.findById(tripId).orElseThrow(() -> new EntityNotFoundException("Trip not found with id " + tripId));
         trip.getPausesId().add(pauseId);
+        tripRepository.save(trip);  // Actualizamos el viaje con el nuevo ID de pausa
     }
 
     @Transactional
@@ -73,21 +85,21 @@ public class TripService {
         return trips;
     }
 
-    public TripDTO getTripWithPauseTime(Long tripId) {
+    public TripDTO getTripWithPauseTime(String tripId) {
         Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new EntityNotFoundException("Trip not found with id " + tripId));
 
         long pauseTime = getPauseTime(trip.getPausesId());
 
-        // Crear un TripDTO con el tiempo de pausa incluido
-        TripDTO tripDTO = new TripDTO(trip);
+        //  Creamos el DTO con el tiempo de pausa
+        TripDTO tripDTO = convertToDTO(trip);
         tripDTO.setPauseTime(pauseTime);
 
         return tripDTO;
     }
 
     // Método para calcular el tiempo total de pausa de una lista de pausas
-    public long getPauseTime(List<Long> pausesId) {
+    public long getPauseTime(List<String> pausesId) {
         long totalPauseTime = 0;
 
         // Obtener los detalles de cada pausa a partir de los IDs
@@ -106,12 +118,12 @@ public class TripService {
     }
 
     @Transactional
-    public void deleteById(Long tripId) {
+    public void deleteById(String tripId) {
         tripRepository.deleteById(tripId);
     }
 
     @Transactional
-    public TripDTO updateById(Long id, TripDTO tripDTO) {
+    public TripDTO updateById(String id, TripDTO tripDTO) {
         Trip tripUpdate = tripRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Trip not found with id " + id));
         tripUpdate.setStartDateTime(tripDTO.getStartDateTime());
         tripUpdate.setEndDateTime(tripDTO.getEndDateTime());
@@ -120,20 +132,39 @@ public class TripService {
         tripUpdate.setCreditsConsumed(tripDTO.getCreditsConsumed());
 
         tripRepository.save(tripUpdate);
-        return new TripDTO(tripUpdate);
+        return convertToDTO(tripUpdate);
     }
 
 
     private TripDTO convertToDTO(Trip trip) {
         // Convierte Trip a TripDTO
-        return new TripDTO(trip);
+        TripDTO newTripDTO = new TripDTO();
+        newTripDTO.setAccountId(trip.getAccountId());
+        newTripDTO.setStartDateTime(trip.getStartDateTime());
+        newTripDTO.setEndDateTime(trip.getEndDateTime());
+        newTripDTO.setDistanceTraveled(trip.getDistanceTraveled());
+        newTripDTO.setDuration(trip.getDuration());
+        newTripDTO.setCreditsConsumed(trip.getCreditsConsumed());
+
+        return new TripDTO();
+    }
+
+    public List<Pause> getPausesForTrip(Trip trip) {
+        return pauseRepository.findAllById(trip.getPausesId());
     }
 
     public Long countScooterTripByScooterAndYear(Long scooterId, int year) {
         return tripRepository.countTripByScooterAndYear(scooterId, year);
     }
 
-    public List<BenefitsBetweenMonthsDTO>getBenefitsReport(int year,int startMonth,int endMonth){
-        return tripRepository.getBenefitsReport(year,startMonth,endMonth);
+    public List<BenefitsBetweenMonthsDTO> getBenefitsReport(int year, int startMonth, int endMonth) {
+        List<Document> rawResults = tripRepository.getBenefitsReport(year, startMonth, endMonth);
+
+        return rawResults.stream()
+                .map(doc -> new BenefitsBetweenMonthsDTO(
+                        doc.getInteger("_id"),  // Mongo usa "_id" como agrupador
+                        doc.getDouble("totalCredits")
+                ))
+                .collect(Collectors.toList());
     }
 }
