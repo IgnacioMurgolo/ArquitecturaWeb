@@ -67,6 +67,7 @@ public class ScooterController {
         }
     }
 
+    // para el reporte
     @GetMapping("/nearby")
     public List<ScooterDTO> getScootersByLocation(@RequestParam String ubicacion) {
         return scooterService.findNearbyScooters(ubicacion);

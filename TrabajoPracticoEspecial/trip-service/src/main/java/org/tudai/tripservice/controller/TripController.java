@@ -2,7 +2,6 @@ package org.tudai.tripservice.controller;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.tudai.tripservice.dto.BenefitsBetweenMonthsDTO;
@@ -36,9 +35,9 @@ public class TripController {
         return tripService.findTripsByAccountId(accountId);
     }
 
-    @GetMapping("/tripByAccountId/{accountId}")
-    public TripDTO getTripByAccountId(@PathVariable String accountId) {
-        return tripService.getTripWithAccount(accountId);
+    @GetMapping("/tripWithAccount/{id}")
+    public TripDTO getTripWithAccount(@PathVariable String id) {
+        return tripService.getTripWithAccount(id);
     }
 
     @GetMapping("/{tripId}/with-pause-time")

@@ -79,18 +79,16 @@ public class AccountServiceTest {
 
     @Test
     void getTripsByAccountIdTest() {
-        Long accountId = 1L;
+        Long idTrip = 1L;
         List<TripDTO> trips = Arrays.asList(new TripDTO(), new TripDTO());
 
+        when(tripClient.getTripsByAccountId(String.valueOf(idTrip))).thenReturn(trips);
 
-        when(tripClient.getTripsByAccountId(String.valueOf(accountId))).thenReturn(trips);
-
-        List<TripDTO> result = accountService.getTripsByAccountId(String.valueOf(accountId));
-
+        List<TripDTO> result = accountService.getTripsByAccountId(String.valueOf(idTrip));
 
         assertNotNull(result);
         assertEquals(2, result.size());
-        verify(tripClient, times(1)).getTripsByAccountId(String.valueOf(accountId));
+        verify(tripClient, times(1)).getTripsByAccountId(String.valueOf(idTrip));
     }
 
     @Test

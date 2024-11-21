@@ -42,10 +42,10 @@ public class AccountController {
         }
     }
 
-    @GetMapping("/tripsByAccount/{id}")
-    public ResponseEntity<?> getTripsByAccountId(@PathVariable Long id) {
+    @GetMapping("/tripsWithAccountId/{accountId}")
+    public ResponseEntity<?> getTripsByAccountId(@PathVariable String accountId) {
         try {
-            List<TripDTO> tripDTOList = accountService.getTripsByAccountId(String.valueOf(id));
+            List<TripDTO> tripDTOList = accountService.getTripsByAccountId(accountId);
             if (tripDTOList.isEmpty())
                 return ResponseEntity.noContent().build();
             return ResponseEntity.ok().body(tripDTOList);
@@ -61,7 +61,6 @@ public class AccountController {
         accountService.updateAccountStatus(accountId, status);
         return ResponseEntity.ok().build();
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {

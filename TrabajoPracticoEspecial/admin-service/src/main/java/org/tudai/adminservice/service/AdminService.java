@@ -52,7 +52,6 @@ public class AdminService {
             admin.setEffectiveDate(null);
             adminRepository.save(admin);
         }
-
         return admin.getPricePerKm();
     }
 

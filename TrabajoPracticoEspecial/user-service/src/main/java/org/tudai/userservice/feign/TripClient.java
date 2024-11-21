@@ -10,6 +10,6 @@ import java.util.List;
 @FeignClient(name = "trip-service")
 public interface TripClient {
 
-    @GetMapping("/trips/account/{accountId}")
-    List<TripDTO> getTripsByAccountId(@PathVariable("accountId") String accountId);
+    @GetMapping("/trips/account/{id}")
+    List<TripDTO> getTripsByAccountId(@PathVariable("id") String id);
 }

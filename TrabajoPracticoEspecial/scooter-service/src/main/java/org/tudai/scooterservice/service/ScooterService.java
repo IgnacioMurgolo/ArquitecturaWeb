@@ -86,7 +86,8 @@ public class ScooterService {
         }
         return result;
     }
-    // cuenta cuantos scooters hay con status true
+
+    // cuenta cuantos scooters hay con status true y false para el reporte
     public Long countOperationalScooters() {
         return scooterRepository.countByStatus(true);
     }
