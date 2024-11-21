@@ -54,7 +54,7 @@ Esto iniciará:
  
  ## Trip Service
  #### Gestión de Trip y Pause
-  **usa base de datos MongoDB**
+  **(usa base de datos MongoDB)**
   + `GET /trips/`: Obtiene la lista de todos los trips.
   + `POST /trips/register`: Crea un nuevo trip.
   + `GET /trips/{id}`: Obtiene un trip por su ID.
@@ -70,9 +70,6 @@ Esto iniciará:
   + `GET /pauses/{id}`: Obtiene un pause por su ID.
   + `PUT /pauses/{id}`: Actualiza los datos de un pause existente.
   + `DELETE /pauses/{id}`: Elimina un pause.
-+ Extras
-   + `GET /trips//account/{accountId}`: Muestra un listado de viajes dado un id de cuenta
-   + `GET /trips//tripWithAccount/{id}`: Muestra un viaje con los datos de la cuenta
 
 ## User Service
  #### Gestión de User y Account
@@ -82,14 +79,15 @@ Esto iniciará:
   + `GET /users/{id}`: Obtiene un user por su ID.
   + `PUT /users/{id}`: Actualiza los datos de un user existente.
   + `DELETE /users/{id}`: Elimina un user.
-
-  + `GET /accounts/`: Obtiene la lista de todos los accounts.
-  + `POST /accounts/register`: Crea un nuevo account.
-  + `GET /accounts/{id}`: Obtiene un account por su ID.
-  + `PUT /accounts/{id}`: Actualiza los datos de un account existente.
-  + `DELETE /accounts/{id}`: Elimina un account.
+ 
+ #### Acount:
+ + `GET /accounts/`: Obtiene la lista de todos los accounts.
+ + `POST /accounts/register`: Crea un nuevo account.
+ + `GET /accounts/{id}`: Obtiene un account por su ID.
+ + `PUT /accounts/{id}`: Actualiza los datos de un account existente.
+ + `DELETE /accounts/{id}`: Elimina un account.
 + Extras
-  + `GET /accounts//tripsWithAccount/{tripId}`: Devuelve una lista de viajes dado el id de una cuenta.
+  + `GET /accounts/tripsWithAccount/{tripId}`: Devuelve una lista de viajes dado el id de una cuenta.
 
  ## Admin Service
  #### Gestión de Administradores
