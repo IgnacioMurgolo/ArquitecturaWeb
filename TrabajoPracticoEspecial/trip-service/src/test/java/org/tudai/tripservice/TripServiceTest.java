@@ -13,9 +13,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.tudai.tripservice.dto.TripDTO;
-import org.tudai.tripservice.entitity.Trip;
+import org.tudai.tripservice.entity.Trip;
 import org.tudai.tripservice.dto.AccountDTO;
-import org.tudai.tripservice.entitity.Pause;
+import org.tudai.tripservice.entity.Pause;
 
 import java.util.*;
 

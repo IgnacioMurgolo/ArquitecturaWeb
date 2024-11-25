@@ -1,26 +1,30 @@
-version: '3.8'
+
 services:
-  eureka-service:
-    image: eureka-service:latest
+  eureka-server:
+    image: netflix/eureka-server:latest
     build:
-      context: ./eureka-service
+      context: ./eureka-server
       dockerfile: Dockerfile
     ports:
       - "8761:8761"
     environment:
-      EUREKA_INSTANCE_HOSTNAME: eureka-service
+      EUREKA_INSTANCE_HOSTNAME: eureka-server
     networks:
       - microservices-network
 
   gateway-service:
-    image: gateway-service:latest
+    image: springcloud/spring-cloud-gateway:latest
     build:
       context: ./gateway
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:
-      - eureka-service
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/securitydb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD:
     networks:
       - microservices-network
 
@@ -30,7 +34,7 @@ services:
       context: ./admin-service
       dockerfile: Dockerfile
     ports:
-      - "8081:8080"
+      - "8086:8086"
     depends_on:
       - mysql
     environment:
@@ -41,28 +45,28 @@ services:
       - microservices-network
 
   maintenance-service:
-    image: admin-service:latest
+    image: maintenance-service:latest
     build:
-      context: ./admin-service
+      context: ./maintenance-service
       dockerfile: Dockerfile
     ports:
-      - "8082:8080"
+      - "8082:8082"
     depends_on:
       - mysql
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mantenanceb
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/maintenanceb
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD:
     networks:
       - microservices-network
 
   scooter-service:
-    image: user-service:latest
+    image: scooter-service:latest
     build:
-      context: ./user-service
+      context: ./scooter-service
       dockerfile: Dockerfile
     ports:
-      - "8083:8080"
+      - "8083:8083"
     depends_on:
       - mysql
     environment:
@@ -78,7 +82,7 @@ services:
       context: ./user-service
       dockerfile: Dockerfile
     ports:
-      - "8084:8080"
+      - "8084:8084"
     depends_on:
       - mysql
     environment:
@@ -88,13 +92,29 @@ services:
     networks:
       - microservices-network
 
+  report-service:
+    image: report-service:latest
+    build:
+      context: ./report-service
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka-server
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-service:8761/eureka/
+      EUREKA_INSTANCE_HOSTNAME: report-service
+    networks:
+      - microservices-network
+
+
   trip-service:
     image: trip-service:latest
     build:
       context: ./trip-service
       dockerfile: Dockerfile
     ports:
-      - "8085:8080"
+      - "8085:8085"
     depends_on:
       - mongo
     environment:
@@ -108,7 +128,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD:
+      MYSQL_ALLOW_EMPTY_PASSWORD: yesdocker
       MYSQL_DATABASE: tpe
     networks:
       - microservices-network
@@ -120,7 +140,7 @@ services:
       - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: ""
+      MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
     networks:

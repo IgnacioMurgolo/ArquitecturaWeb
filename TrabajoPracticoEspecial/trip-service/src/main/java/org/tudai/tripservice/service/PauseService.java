@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tudai.tripservice.dto.PauseDTO;
-import org.tudai.tripservice.entitity.Pause;
+import org.tudai.tripservice.entity.Pause;
 import org.tudai.tripservice.repository.PauseRepository;
 
 import java.util.ArrayList;

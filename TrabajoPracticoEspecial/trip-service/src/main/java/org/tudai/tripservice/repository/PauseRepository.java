@@ -2,7 +2,7 @@ package org.tudai.tripservice.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import org.tudai.tripservice.entitity.Pause;
+import org.tudai.tripservice.entity.Pause;
 
 @Repository
 public interface PauseRepository extends MongoRepository<Pause, String> {

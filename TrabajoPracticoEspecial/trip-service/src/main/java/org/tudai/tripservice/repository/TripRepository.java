@@ -2,7 +2,7 @@ package org.tudai.tripservice.repository;
 
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.tudai.tripservice.entitity.Trip;
+import org.tudai.tripservice.entity.Trip;
 
 import java.util.List;
 

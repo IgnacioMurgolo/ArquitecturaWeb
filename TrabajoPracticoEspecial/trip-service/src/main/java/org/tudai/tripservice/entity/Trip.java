@@ -1,4 +1,4 @@
-package org.tudai.tripservice.entitity;
+package org.tudai.tripservice.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

@@ -3,8 +3,6 @@ package org.tudai.reportservice.dto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.tudai.tripservice.entitity.Trip;
-
 import java.util.Date;
 
 @Getter
@@ -32,15 +30,6 @@ public class TripDTO {
         this.duration = duration;
         this.creditsConsumed = creditsConsumed;
         this.scooterId = scooterId;
-    }
-
-    public TripDTO(Trip trip) {
-        this.accountId = trip.getAccountId();
-        this.startDateTime = trip.getStartDateTime();
-        this.endDateTime = trip.getEndDateTime();
-        this.distanceTraveled = trip.getDistanceTraveled();
-        this.duration = trip.getDuration();
-        this.creditsConsumed = trip.getCreditsConsumed();
     }
 
     public TripDTO(Date startDateTime, Date endDateTime, Double distanceTraveled, Double duration, Double creditsConsumed) {

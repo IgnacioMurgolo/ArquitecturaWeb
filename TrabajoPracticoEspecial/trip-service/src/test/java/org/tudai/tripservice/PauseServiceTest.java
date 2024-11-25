@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.tudai.tripservice.dto.PauseDTO;
-import org.tudai.tripservice.entitity.Pause;
+import org.tudai.tripservice.entity.Pause;
 import org.tudai.tripservice.repository.PauseRepository;
 import org.tudai.tripservice.service.PauseService;
 import org.tudai.tripservice.service.TripService;

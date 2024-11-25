@@ -3,7 +3,6 @@ package org.tudai.tripservice.dto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.tudai.tripservice.entitity.Trip;
 
 import java.util.Date;
 
